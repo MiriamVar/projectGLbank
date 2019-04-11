@@ -25,7 +25,7 @@
             <Button fx:id="enterBtn" layoutX="330.0" layoutY="360.0" mnemonicParsing="false" onAction="#logIn" text="Enter" />
             <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="252.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/banking.png" />
+                  <Image url="@../images/banking.jpg" />
                </image>
             </ImageView>
             <Label layoutX="252.0" layoutY="227.0" text="Login" />

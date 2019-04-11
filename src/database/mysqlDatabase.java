@@ -4,6 +4,8 @@ import employee.employee;
 import sample.Globals;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class mysqlDatabase {
 
@@ -33,13 +35,13 @@ public class mysqlDatabase {
     }
 
 
-    static final String query = "select * from employee inner join loginemp on employee.id=loginemp.ide where login = ? and password = ?";
+    static final String queryEmp1 = "select * from employee inner join loginemp on employee.id=loginemp.ide where login = ? and password = ?";
 
     public employee getEmployee(String login, String pass){
         Connection con = getConnection();
         ResultSet res;
         try {
-            PreparedStatement stmnt = con.prepareStatement(query);
+            PreparedStatement stmnt = con.prepareStatement(queryEmp1);
             stmnt.setString(1,login);
             stmnt.setString(2,pass);
             res = stmnt.executeQuery();
@@ -60,6 +62,28 @@ public class mysqlDatabase {
 
         return null;
 
+    }
 
+    static final String queryEmp = "secelt client.fname, client.lname from client";
+
+    public List<employee> getAllEmployees(){
+        Connection con = getConnection();
+        ResultSet res;
+        List<employee> clients = new ArrayList<>();
+        try {
+            PreparedStatement stmnt = con.prepareStatement(queryEmp);
+            res = stmnt.executeQuery();
+            while (res.next()){
+                String name = res.getString("fname");
+                String surname = res.getString("lname");
+                employee employee = new employee(name,surname);
+               clients.add(employee);
+            }
+            con.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return clients;
     }
 }

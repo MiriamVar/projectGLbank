@@ -12,6 +12,10 @@ public class employee {
         this.lname = lname;
         this.position = position;
     }
+    public employee(String fname, String lname){
+        this.fname = fname;
+        this.lname = lname;
+    }
 
 
     public int getId() {

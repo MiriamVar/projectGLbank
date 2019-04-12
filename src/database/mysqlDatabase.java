@@ -82,7 +82,6 @@ public class mysqlDatabase {
                 String name = res.getString("fname");
                 String surname = res.getString("lname");
                 Client client =  new Client(name, surname);
-                System.out.println(client);
                clients.add(client);
             }
             return clients;
@@ -93,24 +92,4 @@ public class mysqlDatabase {
         return null;
     }
 
-//    private final ObservableList options = FXCollections.observableArrayList();
-//    ComboBox box = new ComboBox();
-//
-//    public void fillComboBox(){
-//        Connection connection = getConnection();
-//        try {
-//            PreparedStatement statement = connection.prepareStatement(queryClient);
-//            ResultSet resultSet = statement.executeQuery();
-//
-//            while (resultSet.next()){
-//                options.add(resultSet.getString("fname"));
-//                options.add(resultSet.getString("lname"));
-//            }
-//
-//            statement.close();
-//            resultSet.close();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
 }

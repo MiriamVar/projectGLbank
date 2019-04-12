@@ -7,7 +7,9 @@ import employee.employee;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -21,28 +23,35 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class Log {
     public Label name;
     public Label surname;
     public Button logOut;
     public Stage dialogStage;
-    public List<Client> nameOfClient;
     public ComboBox clientsNames;
+    public Button addNewClient;
+
+    public void initialize () throws SQLException {
+        clients();
+    }
 
 
-    public void showData(employee emp){
+    public void showData(employee emp) {
         name.setText(emp.getFname());
         surname.setText(emp.getLname());
     }
 
     public void logOut(ActionEvent actionEvent) throws IOException {
 
-        Node node = (Node)actionEvent.getSource();
+        Node node = (Node) actionEvent.getSource();
         dialogStage = (Stage) node.getScene().getWindow();
         dialogStage.close();
 
@@ -56,32 +65,26 @@ public class Log {
         stage.show();
     }
 
-    public void clients(ActionEvent actionEvent) {
-        System.out.println("clieeeents");
+
+    public void clients() throws SQLException{
         mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
-        nameOfClient =database.getAllClients();
-        for (Client client: nameOfClient ) {
-        //    nameOfClient = client.getFname()+client.getLname();
-            clientsNames.setValue(nameOfClient);
-            System.out.println(client);
-            clientsNames.getSelectionModel().select(0);
+        List<Client> client = database.getAllClients();
+        ObservableList<String> list = FXCollections.observableArrayList();
+        for (int i=0; i<client.size();i++){
+            list.add(client.get(i).getFname()+" "+client.get(i).getLname());
+        }
+        clientsNames.setItems(list);
+        clientsNames.getSelectionModel().select(0);
     }
-
-    }
-
-
-//    public void gettingAllClients( List<Client> allClients ) {
-//        mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
-//        database.getConnection();
-//        for (Client client: allClients) {
-//            nameOfClient = client.getFname()+client.getLname();
-//            clientsNames.getItems().add(nameOfClient);
-//            System.out.println(nameOfClient);
-//            clientsNames.getSelectionModel().select(0);
-//        }
-//
-//    }
-
 
 
 }
+
+
+
+
+
+
+
+
+

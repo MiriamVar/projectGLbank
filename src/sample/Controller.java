@@ -23,6 +23,8 @@ public class Controller {
     Stage dialogStage = new Stage();
     employee emp;
 
+
+
     public void logIn(ActionEvent actionEvent) {
         String userName = loginInput.getText();
         String password = passInput.getText();
@@ -63,4 +65,6 @@ public class Controller {
         }
 
     }
+
+
 }

@@ -1,6 +1,10 @@
 package database;
 
+import client.Client;
 import employee.employee;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.ComboBox;
 import sample.Globals;
 
 import java.sql.*;
@@ -64,26 +68,49 @@ public class mysqlDatabase {
 
     }
 
-    static final String queryEmp = "secelt client.fname, client.lname from client";
+    static final String queryClient = "select client.fname, client.lname from client";
 
-    public List<employee> getAllEmployees(){
+    public List<Client> getAllClients(){
         Connection con = getConnection();
+        System.out.println("geeeeet");
         ResultSet res;
-        List<employee> clients = new ArrayList<>();
+        List<Client> clients = new ArrayList<>();
         try {
-            PreparedStatement stmnt = con.prepareStatement(queryEmp);
+            PreparedStatement stmnt = con.prepareStatement(queryClient);
             res = stmnt.executeQuery();
             while (res.next()){
                 String name = res.getString("fname");
                 String surname = res.getString("lname");
-                employee employee = new employee(name,surname);
-               clients.add(employee);
+                Client client =  new Client(name, surname);
+                System.out.println(client);
+               clients.add(client);
             }
-            con.close();
+            return clients;
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return clients;
+        return null;
     }
+
+//    private final ObservableList options = FXCollections.observableArrayList();
+//    ComboBox box = new ComboBox();
+//
+//    public void fillComboBox(){
+//        Connection connection = getConnection();
+//        try {
+//            PreparedStatement statement = connection.prepareStatement(queryClient);
+//            ResultSet resultSet = statement.executeQuery();
+//
+//            while (resultSet.next()){
+//                options.add(resultSet.getString("fname"));
+//                options.add(resultSet.getString("lname"));
+//            }
+//
+//            statement.close();
+//            resultSet.close();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

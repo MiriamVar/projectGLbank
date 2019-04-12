@@ -1,20 +1,28 @@
 package sample;
 
 
+import client.Client;
 import database.mysqlDatabase;
 import employee.employee;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.input.DragEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +31,9 @@ public class Log {
     public Label surname;
     public Button logOut;
     public Stage dialogStage;
-    public ChoiceBox<employee> clientsNames;
-    public List<employee> emp;
+    public List<Client> nameOfClient;
+    public ComboBox clientsNames;
+
 
     public void showData(employee emp){
         name.setText(emp.getFname());
@@ -47,13 +56,32 @@ public class Log {
         stage.show();
     }
 
-    public void gettingAllClients(DragEvent actionEvent) {
+    public void clients(ActionEvent actionEvent) {
+        System.out.println("clieeeents");
         mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
-        emp = database.getAllEmployees();
-        for (employee person: emp) {
-            System.out.println(person.getFname()+" "+person.getLname());
-        }
-
+        nameOfClient =database.getAllClients();
+        for (Client client: nameOfClient ) {
+        //    nameOfClient = client.getFname()+client.getLname();
+            clientsNames.setValue(nameOfClient);
+            System.out.println(client);
+            clientsNames.getSelectionModel().select(0);
+    }
 
     }
+
+
+//    public void gettingAllClients( List<Client> allClients ) {
+//        mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
+//        database.getConnection();
+//        for (Client client: allClients) {
+//            nameOfClient = client.getFname()+client.getLname();
+//            clientsNames.getItems().add(nameOfClient);
+//            System.out.println(nameOfClient);
+//            clientsNames.getSelectionModel().select(0);
+//        }
+//
+//    }
+
+
+
 }

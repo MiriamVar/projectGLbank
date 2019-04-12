@@ -17,6 +17,12 @@ public class Client {
        this.lname = lname;
    }
 
+    public Client( String fname, String lname, String email) {
+        this.fname = fname;
+        this.lname = lname;
+        this.email = email;
+    }
+
     public int getId() {
         return id;
     }

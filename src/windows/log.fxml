@@ -11,7 +11,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Log">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="windows.Log">
    <children>
       <Label fx:id="name" layoutX="324.0" layoutY="27.0" prefHeight="24.0" prefWidth="75.0" text="Label" />
       <Label fx:id="surname" layoutX="420.0" layoutY="27.0" prefHeight="24.0" prefWidth="84.0" text="Label" />
@@ -26,7 +26,7 @@
       </ImageView>
       <Separator layoutY="70.0" prefHeight="2.0" prefWidth="600.0" />
       <ComboBox fx:id="clientsNames" layoutX="158.0" layoutY="91.0" prefWidth="150.0" />
-      <Button fx:id="addNewClient" layoutX="355.0" layoutY="91.0" mnemonicParsing="false" text="New Client" />
+      <Button fx:id="addNewClient" layoutX="355.0" layoutY="91.0" mnemonicParsing="false" onAction="#createNewClient" text="New Client" />
       <TabPane layoutY="129.0" prefHeight="270.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Client">

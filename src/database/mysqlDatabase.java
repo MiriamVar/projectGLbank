@@ -2,10 +2,7 @@ package database;
 
 import client.Client;
 import employee.employee;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.ComboBox;
-import sample.Globals;
+import main.Globals;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -90,6 +87,25 @@ public class mysqlDatabase {
             e.printStackTrace();
         }
         return null;
+    }
+
+    static final String queryNewClient = "insert into client(fname,lname,email) values(?,?,?)";
+
+    public void addNewClient(Client client){
+        Connection conn = getConnection();
+        System.out.println("vytvaram clienta");
+        try{
+            PreparedStatement statement = conn.prepareStatement(queryNewClient);
+            statement.setString(1,client.getFname());
+            statement.setString(2,client.getLname());
+            statement.setString(3,client.getEmail());
+            System.out.println("client vytvorey");
+            conn.close();
+
+        }  catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

@@ -1,4 +1,4 @@
-package sample;
+package windows;
 
 import database.mysqlDatabase;
 import employee.employee;
@@ -43,7 +43,7 @@ public class Controller {
                 dialogStage.close();
 
                 FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("Log.fxml"));
+                fxmlLoader.setLocation(getClass().getResource("../windows/log.fxml"));
                 Parent accountView = fxmlLoader.load();
 
                 //otvori stranku

@@ -7,6 +7,7 @@ import employee.employee;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -28,6 +29,9 @@ public class Log {
     public Stage dialogStage;
     public ComboBox clientsNames;
     public Button addNewClient;
+    public Label menoClient;
+    public Label priezviskoCleint;
+    public Label emailClient;
 
     public void initialize () throws SQLException {
         clients();
@@ -65,6 +69,8 @@ public class Log {
         }
         clientsNames.setItems(list);
         clientsNames.getSelectionModel().select(0);
+
+
     }
 
 
@@ -82,6 +88,15 @@ public class Log {
 
         stage.show();
     }
+
+    public void showClientsInfo(Client client){
+        menoClient.setText(client.getFname());
+        priezviskoCleint.setText(client.getFname());
+        emailClient.setText(client.getEmail());
+    }
+
+
+
 }
 
 

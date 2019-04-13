@@ -3,6 +3,7 @@ package database;
 import client.Client;
 import employee.employee;
 import main.Globals;
+import windows.Log;
 
 import java.sql.*;
 import java.util.ArrayList;

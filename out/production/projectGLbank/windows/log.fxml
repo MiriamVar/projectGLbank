@@ -60,11 +60,11 @@
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <Label layoutX="32.0" layoutY="27.0" text="Number of account" />
-                        <ComboBox layoutX="174.0" layoutY="23.0" prefWidth="150.0" />
+                        <ComboBox fx:id="clientsAccounts" layoutX="174.0" layoutY="23.0" onAction="#showAccountInfo" prefWidth="150.0" />
                         <Separator layoutY="65.0" prefHeight="3.0" prefWidth="600.0" />
-                        <Label layoutX="32.0" layoutY="80.0" text="number" />
+                        <Label fx:id="accNumber" layoutX="32.0" layoutY="80.0" text="number" />
                         <Label layoutX="146.0" layoutY="119.0" text="cash:" />
-                        <Label layoutX="199.0" layoutY="113.0" text="money">
+                        <Label fx:id="money" layoutX="199.0" layoutY="113.0" text="money">
                            <font>
                               <Font name="Calibri Bold" size="21.0" />
                            </font>

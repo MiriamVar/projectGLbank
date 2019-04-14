@@ -1,5 +1,6 @@
 package database;
 
+import client.Account;
 import client.Client;
 import employee.employee;
 import main.Globals;
@@ -132,6 +133,33 @@ public class mysqlDatabase {
                     String surname = res.getString("lname");
                     String email = res.getString("email");
                     return new Client(name, surname, email);
+                }
+            }
+            return swap;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return swap;
+
+    }
+
+    static final String queryAccount = "select * from account";
+
+    public Account getAccountInfo(int id) throws SQLException {
+        System.out.println("zaciatok metody getAccountInfo"+ id);
+        Account swap = new Account(-1,-1, "undefined", -1);
+        Connection con = getConnection();
+        ResultSet res;
+        try {
+            PreparedStatement stmnt = con.prepareStatement(queryAccount);
+            res = stmnt.executeQuery();
+            while (res.next()) {
+                System.out.println("zaaas"+ res.getInt("id"));
+                if (res.getInt("idc") == id) {
+                    String accountNum = res.getString("accnum");
+                    double amount = res.getDouble("amount");
+                    return new Account(accountNum,amount);
                 }
             }
             return swap;

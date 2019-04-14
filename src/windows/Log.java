@@ -20,18 +20,25 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import client.Account;
 
 
 public class Log<client> {
     public Label name;
     public Label surname;
+
     public Button logOut;
     public Stage dialogStage;
+
     public ComboBox clientsNames;
     public Button addNewClient;
     public Label menoClient;
     public Label priezviskoCleint;
     public Label emailClient;
+
+    public ComboBox clientsAccounts;
+    public Label accNumber;
+    public Label money;
 
     mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
     private List<Client> client;
@@ -74,6 +81,7 @@ public class Log<client> {
         clientsNames.setItems(list);
         clientsNames.getSelectionModel().select(0);
         showClientsInfo(this.client.get(0).getId());
+        showAccountInfo(this.client.get(0).getId());
     }
 
 
@@ -92,6 +100,12 @@ public class Log<client> {
         stage.show();
     }
 
+
+
+
+
+
+    //naplni labely s info o useroch
     public void showClientsInfo() throws SQLException {
         System.out.println("chcem nacitat info");
         String toAllNames = clientsNames.getValue().toString();
@@ -107,7 +121,7 @@ public class Log<client> {
         emailClient.setText(clientik.getEmail());
     }
 
-
+    //zistim id vybraneho usera
     public int getSelectedClientID() {
         System.out.println("vyberam idcko clienta ktory je vybraty");
         System.out.println(clientsNames.getSelectionModel().getSelectedIndex());
@@ -116,12 +130,42 @@ public class Log<client> {
         return client.get(clientsIndex).getId();
     }
 
+    //vypise info hned o prvom useri
     public void showClientsInfo(int id) throws SQLException {
         Client clientik = database.getClientInfo(getSelectedClientID());
         menoClient.setText(clientik.getFname());
         priezviskoCleint.setText(clientik.getLname());
         emailClient.setText(clientik.getEmail());
     }
+
+
+
+
+
+
+
+    //vypise info o ucte
+    public void showAccountInfo() throws SQLException {
+        System.out.println("chcem nacitat info");
+        String toAllNames = clientsAccounts.getValue().toString();
+        System.out.println("Vybrala som si: "+toAllNames);
+
+
+        mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
+        int id = getSelectedClientID();
+        System.out.println(id);
+        Account ucet = database.getAccountInfo(getSelectedClientID());
+        accNumber.setText(ucet.getAccountNumber());
+        money.setText(String.valueOf(ucet.getAmount()));
+    }
+
+    public void showAccountInfo(int id) throws SQLException {
+        Account ucet = database.getAccountInfo(getSelectedClientID());
+        accNumber.setText(ucet.getAccountNumber());
+        money.setText(String.valueOf(ucet.getAmount()));
+    }
+
+
 }
 
 

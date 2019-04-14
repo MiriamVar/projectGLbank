@@ -109,4 +109,32 @@ public class mysqlDatabase {
 
     }
 
+    static final String queryID = "select id,fname,lname,email from client where id like ?";
+
+    public Client getClientInfo(int id) throws SQLException {
+        System.out.println("vyhatujem info o clientovi");
+        String fname="";
+        String lname="";
+        String email="";
+
+        Connection conn=getConnection();
+        PreparedStatement statement=conn.prepareStatement(queryID);
+        statement.setString(1, String.valueOf(id));
+
+        ResultSet res = statement.executeQuery();
+        while (res.next()) {
+            fname = res.getString("fname");
+            lname = res.getString("lname");
+            email = res.getString("email");
+        }
+        if(fname!=""&&id!=0&&lname!=""&&email!="") {
+
+            System.out.println(id + " " + fname + " " + lname + " " + email);
+            return new Client(id, fname, lname, email);
+        }
+        else{
+            return null;
+        }
+    }
+
 }

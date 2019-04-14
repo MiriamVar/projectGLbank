@@ -22,7 +22,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 
-public class Log {
+public class Log<client> {
     public Label name;
     public Label surname;
     public Button logOut;
@@ -32,7 +32,10 @@ public class Log {
     public Label menoClient;
     public Label priezviskoCleint;
     public Label emailClient;
-    Client current;
+
+    mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
+    List<Client>  client = database.getAllClients();
+
 
     public void initialize () throws SQLException {
         clients();
@@ -62,9 +65,6 @@ public class Log {
 
 
     public void clients() throws SQLException{
-
-        mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
-        List<Client> client = database.getAllClients();
         ObservableList<String> list = FXCollections.observableArrayList();
 
         for (int i=0; i<client.size();i++){
@@ -72,10 +72,6 @@ public class Log {
         }
         clientsNames.setItems(list);
         clientsNames.getSelectionModel().select(0);
-
-        int id = clientsNames.getSelectionModel().getSelectedIndex();
-        current = client.get(id);
-        showClientsInfo(current);
     }
 
 
@@ -94,10 +90,21 @@ public class Log {
         stage.show();
     }
 
-    public void showClientsInfo(Client client){
-        menoClient.setText(client.getFname());
-        priezviskoCleint.setText(client.getLname());
-        emailClient.setText(client.getEmail());
+    public void showClientsInfo() throws SQLException {
+        System.out.println("chcem nacitat info");
+        mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
+        Client clientik = database.getClientInfo(getSelectedClientID());
+        menoClient.setText(clientik.getFname());
+        priezviskoCleint.setText(clientik.getLname());
+        emailClient.setText(clientik.getEmail());
+    }
+
+
+    public int getSelectedClientID() {
+        System.out.println("vyberam idcko clienta ktory je vybraty");
+        System.out.println(clientsNames.getSelectionModel().getSelectedIndex());
+        int clientsIndex=clientsNames.getSelectionModel().getSelectedIndex();
+        return client.get(clientsIndex).getId();
     }
 }
 

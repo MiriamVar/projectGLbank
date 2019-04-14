@@ -26,7 +26,7 @@
          </image>
       </ImageView>
       <Separator layoutY="70.0" prefHeight="2.0" prefWidth="600.0" />
-      <ComboBox fx:id="clientsNames" layoutX="158.0" layoutY="91.0" prefWidth="150.0" />
+      <ComboBox fx:id="clientsNames" layoutX="158.0" layoutY="91.0" onAction="#showClientsInfo" prefWidth="150.0" />
       <Button fx:id="addNewClient" layoutX="355.0" layoutY="91.0" mnemonicParsing="false" onAction="#createNewClient" text="New Client" />
       <TabPane layoutY="129.0" prefHeight="329.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>

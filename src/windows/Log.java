@@ -34,10 +34,11 @@ public class Log<client> {
     public Label emailClient;
 
     mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
-    List<Client>  client = database.getAllClients();
+    private List<Client> client;
 
 
     public void initialize () throws SQLException {
+        this.client = database.getAllClients();
         clients();
     }
 
@@ -67,11 +68,12 @@ public class Log<client> {
     public void clients() throws SQLException{
         ObservableList<String> list = FXCollections.observableArrayList();
 
-        for (int i=0; i<client.size();i++){
-            list.add(client.get(i).getFname()+" "+client.get(i).getLname());
+        for (int i=0; i<this.client.size();i++){
+            list.add(this.client.get(i).getFname()+" "+this.client.get(i).getLname());
         }
         clientsNames.setItems(list);
         clientsNames.getSelectionModel().select(0);
+        showClientsInfo(this.client.get(0).getId());
     }
 
 
@@ -92,7 +94,13 @@ public class Log<client> {
 
     public void showClientsInfo() throws SQLException {
         System.out.println("chcem nacitat info");
+        String toAllNames = clientsNames.getValue().toString();
+        System.out.println("Vybrala som si: "+toAllNames);
+
+
         mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
+        int id = getSelectedClientID();
+        System.out.println(id);
         Client clientik = database.getClientInfo(getSelectedClientID());
         menoClient.setText(clientik.getFname());
         priezviskoCleint.setText(clientik.getLname());
@@ -104,7 +112,15 @@ public class Log<client> {
         System.out.println("vyberam idcko clienta ktory je vybraty");
         System.out.println(clientsNames.getSelectionModel().getSelectedIndex());
         int clientsIndex=clientsNames.getSelectionModel().getSelectedIndex();
+        System.out.println(clientsIndex);
         return client.get(clientsIndex).getId();
+    }
+
+    public void showClientsInfo(int id) throws SQLException {
+        Client clientik = database.getClientInfo(getSelectedClientID());
+        menoClient.setText(clientik.getFname());
+        priezviskoCleint.setText(clientik.getLname());
+        emailClient.setText(clientik.getEmail());
     }
 }
 

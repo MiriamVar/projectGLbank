@@ -66,7 +66,7 @@ public class mysqlDatabase {
 
     }
 
-    static final String queryClient = "select client.fname, client.lname from client";
+    static final String queryClient = "select * from client";
 
     public List<Client> getAllClients(){
         Connection con = getConnection();
@@ -77,9 +77,11 @@ public class mysqlDatabase {
             PreparedStatement stmnt = con.prepareStatement(queryClient);
             res = stmnt.executeQuery();
             while (res.next()){
+                int id =res.getInt("id");
                 String name = res.getString("fname");
                 String surname = res.getString("lname");
-                Client client =  new Client(name, surname);
+                String email = res.getString("email");
+                Client client =  new Client(id, name, surname,email);
                clients.add(client);
             }
             return clients;
@@ -100,7 +102,11 @@ public class mysqlDatabase {
             statement.setString(1,client.getFname());
             statement.setString(2,client.getLname());
             statement.setString(3,client.getEmail());
-            System.out.println("client vytvorey");
+            if(statement.execute()){
+                System.out.println("client vytvorey");
+            }else{
+                System.out.println("client nevytvoreny");
+            }
             conn.close();
 
         }  catch (SQLException e) {
@@ -109,32 +115,32 @@ public class mysqlDatabase {
 
     }
 
-    static final String queryID = "select id,fname,lname,email from client where id like ?";
+    static final String queryID = "select client.id, client.fname, client.lname, client.email from client";
 
     public Client getClientInfo(int id) throws SQLException {
-        System.out.println("vyhatujem info o clientovi");
-        String fname="";
-        String lname="";
-        String email="";
+        System.out.println("zaciatok metody getClientInfo"+ id);
+        Client swap = new Client(-1,"undefined", "undefined", "undefined");
+        Connection con = getConnection();
+        ResultSet res;
+        try {
+            PreparedStatement stmnt = con.prepareStatement(queryID);
+            res = stmnt.executeQuery();
+            while (res.next()) {
+                System.out.println("nenavidim javu fx"+ res.getInt("id"));
+                if (res.getInt("id") == id) {
+                    String name = res.getString("fname");
+                    String surname = res.getString("lname");
+                    String email = res.getString("email");
+                    return new Client(name, surname, email);
+                }
+            }
+            return swap;
 
-        Connection conn=getConnection();
-        PreparedStatement statement=conn.prepareStatement(queryID);
-        statement.setString(1, String.valueOf(id));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return swap;
 
-        ResultSet res = statement.executeQuery();
-        while (res.next()) {
-            fname = res.getString("fname");
-            lname = res.getString("lname");
-            email = res.getString("email");
-        }
-        if(fname!=""&&id!=0&&lname!=""&&email!="") {
-
-            System.out.println(id + " " + fname + " " + lname + " " + email);
-            return new Client(id, fname, lname, email);
-        }
-        else{
-            return null;
-        }
     }
 
 }

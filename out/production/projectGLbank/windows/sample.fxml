@@ -30,8 +30,8 @@
             </ImageView>
             <Label layoutX="252.0" layoutY="227.0" text="Login" />
             <Label layoutX="242.0" layoutY="291.0" text="Password" />
-            <TextField fx:id="loginInput" layoutX="302.0" layoutY="223.0" />
-            <TextField fx:id="passInput" layoutX="302.0" layoutY="287.0" />
+            <TextField fx:id="loginInput" layoutX="302.0" layoutY="223.0" text="mimik" />
+            <TextField fx:id="passInput" layoutX="302.0" layoutY="287.0" text="qwerty" />
             <Label fx:id="wrongName" layoutX="326.0" layoutY="258.0" text="Wrong user name" textFill="#fc0909" visible="false" />
             <Label fx:id="wrongPassword" layoutX="331.0" layoutY="324.0" text="Wrong password" textFill="#f00000" visible="false" />
          </children>

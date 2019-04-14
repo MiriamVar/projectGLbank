@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="windows.Log">
+<AnchorPane prefHeight="452.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="windows.Log">
    <children>
       <Label fx:id="name" layoutX="324.0" layoutY="27.0" prefHeight="24.0" prefWidth="75.0" text="Label" />
       <Label fx:id="surname" layoutX="420.0" layoutY="27.0" prefHeight="24.0" prefWidth="84.0" text="Label" />
@@ -28,7 +28,7 @@
       <Separator layoutY="70.0" prefHeight="2.0" prefWidth="600.0" />
       <ComboBox fx:id="clientsNames" layoutX="158.0" layoutY="91.0" prefWidth="150.0" />
       <Button fx:id="addNewClient" layoutX="355.0" layoutY="91.0" mnemonicParsing="false" onAction="#createNewClient" text="New Client" />
-      <TabPane layoutY="129.0" prefHeight="270.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane layoutY="129.0" prefHeight="329.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Client">
             <content>
@@ -57,7 +57,20 @@
           </Tab>
           <Tab text="Accounts">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="32.0" layoutY="27.0" text="Number of account" />
+                        <ComboBox layoutX="174.0" layoutY="23.0" prefWidth="150.0" />
+                        <Separator layoutY="65.0" prefHeight="3.0" prefWidth="600.0" />
+                        <Label layoutX="32.0" layoutY="80.0" text="number" />
+                        <Label layoutX="146.0" layoutY="119.0" text="cash:" />
+                        <Label layoutX="199.0" layoutY="113.0" text="money">
+                           <font>
+                              <Font name="Calibri Bold" size="21.0" />
+                           </font>
+                        </Label>
+                        <Button layoutX="20.0" layoutY="256.0" mnemonicParsing="false" text="Create" />
+                     </children></AnchorPane>
             </content>
           </Tab>
             <Tab text="InternetBanking">

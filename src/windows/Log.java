@@ -32,6 +32,7 @@ public class Log {
     public Label menoClient;
     public Label priezviskoCleint;
     public Label emailClient;
+    Client current;
 
     public void initialize () throws SQLException {
         clients();
@@ -61,16 +62,20 @@ public class Log {
 
 
     public void clients() throws SQLException{
+
         mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
         List<Client> client = database.getAllClients();
         ObservableList<String> list = FXCollections.observableArrayList();
+
         for (int i=0; i<client.size();i++){
             list.add(client.get(i).getFname()+" "+client.get(i).getLname());
         }
         clientsNames.setItems(list);
         clientsNames.getSelectionModel().select(0);
 
-
+        int id = clientsNames.getSelectionModel().getSelectedIndex();
+        current = client.get(id);
+        showClientsInfo(current);
     }
 
 
@@ -91,12 +96,9 @@ public class Log {
 
     public void showClientsInfo(Client client){
         menoClient.setText(client.getFname());
-        priezviskoCleint.setText(client.getFname());
+        priezviskoCleint.setText(client.getLname());
         emailClient.setText(client.getEmail());
     }
-
-
-
 }
 
 

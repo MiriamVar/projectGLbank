@@ -52,12 +52,13 @@ public class Log<client> {
     public void initialize () throws SQLException {
         this.client = database.getAllClients();
         clients();
-        this.account = database.getAllAccounts(clientik.getId());
-        clientsAccounts.getSelectionModel().select(0);
+//        this.account = database.getAllAccounts(clientik.getId());
+//        System.out.println("inicialize: "+account);
+        //clientsAccounts.getSelectionModel().select(0);
         showClientsInfo();
     }
 
-
+    //vytvori zozanm clintov a naplni dropdown
     public void clients() throws SQLException{
         ObservableList<String> list = FXCollections.observableArrayList();
 
@@ -65,14 +66,19 @@ public class Log<client> {
             list.add(this.client.get(i).getFname()+" "+this.client.get(i).getLname());
         }
         clientsNames.setItems(list);
+        System.out.println("naplni sa dropdown - clients");
         clientsNames.getSelectionModel().select(0);
+        System.out.println("nastavi sa prvy client aby ho bolo vidno");
         clientik=client.get(0);
+        System.out.println("id prveho clienta"+clientik);
         showClientsInfo(clientik.getId());
+        System.out.println("vola sa metoda na ukazanie prveho usera");
 
     }
 
     //vypise info hned o prvom useri
     public void showClientsInfo(int id) throws SQLException {
+        System.out.println("vypisanie 1. usera");
         menoClient.setText(clientik.getFname());
         priezviskoCleint.setText(clientik.getLname());
         emailClient.setText(clientik.getEmail());
@@ -81,19 +87,21 @@ public class Log<client> {
 
     //naplni labely s info o useroch
     public void showClientsInfo() throws SQLException {
-        String toAllNames = clientsNames.getValue().toString();
-
-        mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
         int id = clientsNames.getSelectionModel().getSelectedIndex();
+        System.out.println("id vybraneho usera "+ id);
         clientik = client.get(id);
+        System.out.println("podla vybraneho usera sa vypisuje info o nom");
         menoClient.setText(clientik.getFname());
         priezviskoCleint.setText(clientik.getLname());
         emailClient.setText(clientik.getEmail());
+
         this.account = database.getAllAccounts(clientik.getId());
+        System.out.println("nastavenie accountu podla vybraneho usera");
 
         accounts();
+        System.out.println("vola sa funkcia ktora naplni list accountov podla usera");
         clientsAccounts.getSelectionModel().select(0);
-
+        System.out.println("esteticky aby to odbre vyzeralo");
 
     }
 
@@ -139,15 +147,14 @@ public class Log<client> {
     public void accounts() throws SQLException{
         System.out.println("KLIKOL SOM NA CLIENTA");
         ObservableList<String> list = FXCollections.observableArrayList();
-        clientsAccounts.getItems().clear();
         for (int i=0; i<this.account.size();i++){
             list.add(this.account.get(i).getAccountNumber());
-
         }
         clientsAccounts.setItems(list);
+        System.out.println("list accountov je naplneny");
 
         if (selectedInxAcc == null){
-            System.out.println("neni vybraty ziaden index");
+            System.out.println("neni vybraty ziaden index accountu");
             clientsAccounts.getSelectionModel().select(0);
         }
 
@@ -155,7 +162,7 @@ public class Log<client> {
         selectedInxAcc = clientsAccounts.getSelectionModel().getSelectedIndex();
         System.out.println("NOVY INDEX JE "+selectedInxAcc);
         showAccountsInfo();
-
+        System.out.println("spusta sa funkcia na vypisanie account info");
     }
 
 
@@ -164,8 +171,10 @@ public class Log<client> {
             selectedInxAcc++;
         }
         accNumber.setText(account.get(selectedInxAcc).getAccountNumber());
+        System.out.println("nastavuje sa cislo uctu do labelu");
         System.out.println("selectedINDEX JEEEEE"+selectedInxAcc);
         money.setText(String.valueOf(account.get(selectedInxAcc).getAmount()));
+        System.out.println("nastavuju s apeniaze z uctu");
     }
 
 }

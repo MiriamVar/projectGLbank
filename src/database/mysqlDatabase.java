@@ -71,7 +71,7 @@ public class mysqlDatabase {
 
     public List<Client> getAllClients(){
         Connection con = getConnection();
-        System.out.println("geeeeet");
+      //  System.out.println("geeeeet");
         ResultSet res;
         List<Client> clients = new ArrayList<>();
         try {
@@ -119,7 +119,7 @@ public class mysqlDatabase {
     static final String queryID = "select client.id, client.fname, client.lname, client.email from client";
 
     public Client getClientInfo(int id) throws SQLException {
-        System.out.println("zaciatok metody getClientInfo"+ id);
+        //System.out.println("zaciatok metody getClientInfo"+ id);
         Client swap = new Client(-1,"undefined", "undefined", "undefined");
         Connection con = getConnection();
         ResultSet res;
@@ -127,7 +127,7 @@ public class mysqlDatabase {
             PreparedStatement stmnt = con.prepareStatement(queryID);
             res = stmnt.executeQuery();
             while (res.next()) {
-                System.out.println("nenavidim javu fx"+ res.getInt("id"));
+               // System.out.println("nenavidim javu fx"+ res.getInt("id"));
                 if (res.getInt("id") == id) {
                     String name = res.getString("fname");
                     String surname = res.getString("lname");
@@ -144,24 +144,54 @@ public class mysqlDatabase {
 
     }
 
-    static final String queryAccount = "select * from account";
 
-    public Account getAccountInfo(int id) throws SQLException {
-        System.out.println("zaciatok metody getAccountInfo"+ id);
+    static final String queryAcc = "select * from account where idc =?";
+
+    public List<Account> getAllAccounts(int idClient){
+        Connection con = getConnection();
+        System.out.println("jaaaj");
+        ResultSet res;
+        List<Account> accounts = new ArrayList<>();
+        try {
+            PreparedStatement stmnt = con.prepareStatement(queryAcc);
+            stmnt.setInt(1,idClient);
+            res = stmnt.executeQuery();
+            while (res.next()){
+                    int id = res.getInt("id");
+                    int idc = res.getInt("idc");
+                    String accountNum = res.getString("accnum");
+                    double amount = res.getDouble("amount");
+                    Account account = new Account(id, idc, accountNum, amount);
+                    accounts.add(account);
+
+            }
+            return accounts;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    static final String queryAccount = "select * from account where idc = ?";
+
+    public Account getAccountInfo(int idClient) throws SQLException {
+        System.out.println("zaciatok metody getAccountInfo"+ idClient);
         Account swap = new Account(-1,-1, "undefined", -1);
         Connection con = getConnection();
         ResultSet res;
         try {
             PreparedStatement stmnt = con.prepareStatement(queryAccount);
+            stmnt.setInt(1,idClient);
             res = stmnt.executeQuery();
             while (res.next()) {
                 System.out.println("zaaas"+ res.getInt("id"));
-                if (res.getInt("idc") == id) {
+                    int id = res.getInt("id");
+                    int idc = res.getInt("idc");
                     String accountNum = res.getString("accnum");
                     double amount = res.getDouble("amount");
-                    return new Account(accountNum,amount);
+                    return new Account(id,idc,accountNum,amount);
                 }
-            }
             return swap;
 
         } catch (SQLException e) {

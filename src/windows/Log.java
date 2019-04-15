@@ -2,13 +2,11 @@ package windows;
 
 
 import client.Client;
-import com.sun.jdi.IntegerType;
 import database.mysqlDatabase;
 import employee.employee;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -40,11 +38,11 @@ public class Log<client> {
     public ComboBox clientsAccounts;
     public Label accNumber;
     public Label money;
+    public Label anyAccount;
 
     mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
     private List<Client> client;
     private List<Account> account;
-    public int clientsIndex;
     public Client clientik;
     private Integer selectedInxAcc;
 
@@ -52,9 +50,6 @@ public class Log<client> {
     public void initialize () throws SQLException {
         this.client = database.getAllClients();
         clients();
-//        this.account = database.getAllAccounts(clientik.getId());
-//        System.out.println("inicialize: "+account);
-        //clientsAccounts.getSelectionModel().select(0);
         showClientsInfo();
     }
 
@@ -96,6 +91,7 @@ public class Log<client> {
         emailClient.setText(clientik.getEmail());
 
         this.account = database.getAllAccounts(clientik.getId());
+        System.out.println("clientikovo id "+clientik.getId());
         System.out.println("nastavenie accountu podla vybraneho usera");
 
         accounts();
@@ -143,9 +139,9 @@ public class Log<client> {
 
 
     //ACCOUNT
-
     public void accounts() throws SQLException{
         System.out.println("KLIKOL SOM NA CLIENTA");
+        System.out.println("velkost accounts listu je:"+ account.size());
         ObservableList<String> list = FXCollections.observableArrayList();
         for (int i=0; i<this.account.size();i++){
             list.add(this.account.get(i).getAccountNumber());
@@ -153,37 +149,34 @@ public class Log<client> {
         clientsAccounts.setItems(list);
         System.out.println("list accountov je naplneny");
 
+
         if (selectedInxAcc == null){
             System.out.println("neni vybraty ziaden index accountu");
+            selectedInxAcc =1;
             clientsAccounts.getSelectionModel().select(0);
         }
 
         System.out.println("STARY INDEX JE "+selectedInxAcc);
-        selectedInxAcc = clientsAccounts.getSelectionModel().getSelectedIndex();
-        System.out.println("NOVY INDEX JE "+selectedInxAcc);
         showAccountsInfo();
         System.out.println("spusta sa funkcia na vypisanie account info");
     }
 
 
     public void showAccountsInfo() throws SQLException {
+        anyAccount.setText("");
+        selectedInxAcc = clientsAccounts.getSelectionModel().getSelectedIndex();
+        System.out.println("NOVY INDEX JE o funkcii showAccounts info  "+selectedInxAcc);
         if (selectedInxAcc<0){
-            selectedInxAcc++;
+            anyAccount.setText("Any account");
+            accNumber.setText("");
+            money.setText("");
+            return;
         }
         accNumber.setText(account.get(selectedInxAcc).getAccountNumber());
         System.out.println("nastavuje sa cislo uctu do labelu");
-        System.out.println("selectedINDEX JEEEEE"+selectedInxAcc);
+        System.out.println("selectedINDEX JEEEEE "+selectedInxAcc);
         money.setText(String.valueOf(account.get(selectedInxAcc).getAmount()));
         System.out.println("nastavuju s apeniaze z uctu");
     }
 
 }
-
-
-
-
-
-
-
-
-

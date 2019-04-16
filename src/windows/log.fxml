@@ -71,6 +71,7 @@
                         </Label>
                         <Button fx:id="newAccount" layoutX="20.0" layoutY="256.0" mnemonicParsing="false" onAction="#createNewAccount" text="Create new Account" />
                         <Label fx:id="anyAccount" layoutX="411.0" layoutY="27.0" />
+                        <Label fx:id="infoNewAcc" layoutX="185.0" layoutY="260.0" />
                      </children></AnchorPane>
             </content>
           </Tab>

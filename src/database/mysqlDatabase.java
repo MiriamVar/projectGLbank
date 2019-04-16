@@ -4,6 +4,7 @@ import client.Account;
 import client.Client;
 import employee.employee;
 import main.Globals;
+import windows.Log;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -149,7 +150,7 @@ public class mysqlDatabase {
 
     public void addNewAccount(int idc, String number){
         Connection conn = getConnection();
-        System.out.println("vytvaram novy account");
+        System.out.println("vytvaram novy account v databaze");
         try{
             PreparedStatement statement = conn.prepareStatement(queryNewAccount);
             statement.setInt(1,idc);

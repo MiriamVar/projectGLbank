@@ -41,6 +41,7 @@ public class Log<client> {
     public Label accNumber;
     public Label money;
     public Label anyAccount;
+    public Label infoNewAcc;
 
     mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
     private List<Client> client;
@@ -200,12 +201,14 @@ public class Log<client> {
                 return number;
             }
         }
-        return null;
+        return number;
     }
 
-    public void createNewAccount(){
+    public void createNewAccount() throws SQLException {
        String numAcc =  generetatingAccoutnNumber();
        database.addNewAccount(clientik.getId(), numAcc);
+       this.account.add(new Account(numAcc));
+       accounts();
     }
 
 

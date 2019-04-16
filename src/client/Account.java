@@ -13,9 +13,8 @@ public class Account {
         this.amount = amount;
     }
 
-    public Account( String accountNumber, double amount){
+    public Account( String accountNumber){
         this.accountNumber = accountNumber;
-        this.amount = amount;
     }
 
     public int getId() {

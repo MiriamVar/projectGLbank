@@ -69,7 +69,7 @@
                               <Font name="Calibri Bold" size="21.0" />
                            </font>
                         </Label>
-                        <Button layoutX="20.0" layoutY="256.0" mnemonicParsing="false" text="Create new Account" />
+                        <Button fx:id="newAccount" layoutX="20.0" layoutY="256.0" mnemonicParsing="false" onAction="#createNewAccount" text="Create new Account" />
                         <Label fx:id="anyAccount" layoutX="411.0" layoutY="27.0" />
                      </children></AnchorPane>
             </content>

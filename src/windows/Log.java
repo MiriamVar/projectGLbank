@@ -19,6 +19,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Random;
+
 import client.Account;
 
 
@@ -45,6 +47,7 @@ public class Log<client> {
     private List<Account> account;
     public Client clientik;
     private Integer selectedInxAcc;
+    private ObservableList<String> list2;
 
 
     public void initialize () throws SQLException {
@@ -142,11 +145,11 @@ public class Log<client> {
     public void accounts() throws SQLException{
         System.out.println("KLIKOL SOM NA CLIENTA");
         System.out.println("velkost accounts listu je:"+ account.size());
-        ObservableList<String> list = FXCollections.observableArrayList();
+        list2 = FXCollections.observableArrayList();
         for (int i=0; i<this.account.size();i++){
-            list.add(this.account.get(i).getAccountNumber());
+            list2.add(this.account.get(i).getAccountNumber());
         }
-        clientsAccounts.setItems(list);
+        clientsAccounts.setItems(list2);
         System.out.println("list accountov je naplneny");
 
 
@@ -178,5 +181,35 @@ public class Log<client> {
         money.setText(String.valueOf(account.get(selectedInxAcc).getAmount()));
         System.out.println("nastavuju s apeniaze z uctu");
     }
+
+    public String generetatingAccoutnNumber(){
+        Random random = new Random();
+        String number ="";
+        for (int i=0;i<10;i++){
+            number = number + random.nextInt(10);
+        }
+
+        System.out.println("desatmiestne sislo "+number);
+
+        for (int i=0;i < this.account.size(); i++){
+            if (account.get(i).getAccountNumber().equals(number)){
+                System.out.println("Taky account uz existuje");
+            }
+            else {
+                System.out.println("vytvaram novy account .. cislo uz mam");
+                return number;
+            }
+        }
+        return null;
+    }
+
+    public void createNewAccount(){
+       String numAcc =  generetatingAccoutnNumber();
+       database.addNewAccount(clientik.getId(), numAcc);
+    }
+
+
+
+
 
 }

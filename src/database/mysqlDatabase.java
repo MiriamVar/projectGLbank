@@ -8,6 +8,7 @@ import main.Globals;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class mysqlDatabase {
 
@@ -142,6 +143,29 @@ public class mysqlDatabase {
             e.printStackTrace();
         }
         return null;
+    }
+
+    static final String queryNewAccount = "insert into account(idc,accNum,amount) values(?,?,?)";
+
+    public void addNewAccount(int idc, String number){
+        Connection conn = getConnection();
+        System.out.println("vytvaram novy account");
+        try{
+            PreparedStatement statement = conn.prepareStatement(queryNewAccount);
+            statement.setInt(1,idc);
+            statement.setString(2,number);
+            statement.setDouble(3,0);
+            if(statement.execute()){
+                System.out.println("account nie je vytvorey");
+            }else{
+                System.out.println("account je vytvoreny");
+            }
+            conn.close();
+
+        }  catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
 

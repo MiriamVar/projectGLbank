@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Random;
 
 import client.Account;
+import client.Card;
 
 
 public class Log<client> {
@@ -42,13 +43,21 @@ public class Log<client> {
     public Label money;
     public Label anyAccount;
     public Label infoNewAcc;
+    public Label pinLabel;
+    public Label activeLabel;
+    public Label expireDateLabel;
+    public Label accNumLabel;
+    public ComboBox clientsCards;
 
     mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
     private List<Client> client;
     private List<Account> account;
     public Client clientik;
+    private Account accountik;
     private Integer selectedInxAcc;
     private ObservableList<String> list2;
+    private ObservableList<String> list3;
+    private List<Card> card;
 
 
     public void initialize () throws SQLException {
@@ -163,6 +172,7 @@ public class Log<client> {
         System.out.println("STARY INDEX JE "+selectedInxAcc);
         showAccountsInfo();
         System.out.println("spusta sa funkcia na vypisanie account info");
+
     }
 
 
@@ -181,6 +191,21 @@ public class Log<client> {
         System.out.println("selectedINDEX JEEEEE "+selectedInxAcc);
         money.setText(String.valueOf(account.get(selectedInxAcc).getAmount()));
         System.out.println("nastavuju s apeniaze z uctu");
+
+        if (selectedInxAcc == null){
+            System.out.println("neni vybraty ziaden index accountu");
+            selectedInxAcc =1;
+            clientsCards.getSelectionModel().select(0);
+        }
+
+        this.card = database.getAllCards(selectedInxAcc);
+        System.out.println("account id "+selectedInxAcc);
+        System.out.println("nastavenie card podla vybraneho accountu");
+
+        cards();
+        System.out.println("vola sa funkcia ktora naplni list kart podla accountu");
+        clientsCards.getSelectionModel().select(0);
+        System.out.println("esteticky aby to dobre vyzeralo");
     }
 
     public String generetatingAccoutnNumber(){
@@ -212,7 +237,19 @@ public class Log<client> {
     }
 
 
+    //CARD
+    public void cards() throws SQLException{
+        System.out.println("KLIKOL SOM NA KARTU");
+        System.out.println("velkost cards listu je:"+ card.size());
+        list3 = FXCollections.observableArrayList();
+        for (int i=0; i<this.card.size();i++){
+            list3.add(String.valueOf(this.card.get(i).getId()));
+        }
+        clientsCards.setItems(list3);
+        System.out.println("list cards je naplneny");
 
 
+
+    }
 
 }

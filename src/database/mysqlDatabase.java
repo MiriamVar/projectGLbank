@@ -1,6 +1,7 @@
 package database;
 
 import client.Account;
+import client.Card;
 import client.Client;
 import employee.employee;
 import main.Globals;
@@ -167,6 +168,36 @@ public class mysqlDatabase {
             e.printStackTrace();
         }
 
+    }
+
+    static final String queryCard = "select * from card where ida =?";
+
+    public List<Card> getAllCards(int idAcc){
+        Connection con = getConnection();
+        System.out.println("beeee");
+        ResultSet res;
+        List<Card> cards = new ArrayList<>();
+        try {
+            PreparedStatement stmnt = con.prepareStatement(queryCard);
+            stmnt.setInt(1,idAcc);
+            res = stmnt.executeQuery();
+            while (res.next()){
+                int id = res.getInt("id");
+                int ida = res.getInt("ida");
+                String pin = res.getString("pin");
+                boolean active = res.getBoolean("active");
+                int expireM = res.getInt("expireM");
+                int expireY = res.getInt("expireY");
+                Card card = new Card(id, ida,pin,active,expireM,expireY);
+                cards.add(card);
+
+            }
+            return cards;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 

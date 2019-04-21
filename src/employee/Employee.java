@@ -1,18 +1,18 @@
 package employee;
 
-public class employee {
+public class Employee {
     private int id;
     private String fname;
     private String lname;
     private int position;
 
-    public employee(int id, String fname, String lname, int position) {
+    public Employee(int id, String fname, String lname, int position) {
         this.id = id;
         this.fname = fname;
         this.lname = lname;
         this.position = position;
     }
-    public employee(String fname, String lname){
+    public Employee(String fname, String lname){
         this.fname = fname;
         this.lname = lname;
     }

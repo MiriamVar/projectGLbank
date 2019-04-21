@@ -14,9 +14,9 @@
 
 <AnchorPane prefHeight="452.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="windows.Log">
    <children>
-      <Label fx:id="name" layoutX="324.0" layoutY="27.0" prefHeight="24.0" prefWidth="75.0" text="Label" />
-      <Label fx:id="surname" layoutX="420.0" layoutY="27.0" prefHeight="24.0" prefWidth="84.0" text="Label" />
-      <Button fx:id="logOut" layoutX="522.0" layoutY="26.0" mnemonicParsing="false" onAction="#logOut" style="-fx-background-color: #f2621f;" text="LogOut" textAlignment="CENTER">
+      <Label fx:id="lblEmpName" layoutX="324.0" layoutY="27.0" prefHeight="24.0" prefWidth="75.0" text="Label" />
+      <Label fx:id="lblEmpSurname" layoutX="420.0" layoutY="27.0" prefHeight="24.0" prefWidth="84.0" text="Label" />
+      <Button fx:id="lblEmpLogOut" layoutX="522.0" layoutY="26.0" mnemonicParsing="false" onAction="#logOut" style="-fx-background-color: #f2621f;" text="LogOut" textAlignment="CENTER">
          <effect>
             <ColorAdjust />
          </effect></Button>
@@ -26,8 +26,8 @@
          </image>
       </ImageView>
       <Separator layoutY="70.0" prefHeight="2.0" prefWidth="600.0" />
-      <ComboBox fx:id="clientsNames" layoutX="158.0" layoutY="91.0" onAction="#showClientsInfo" prefWidth="150.0" />
-      <Button fx:id="addNewClient" layoutX="355.0" layoutY="91.0" mnemonicParsing="false" onAction="#createNewClient" text="New Client" />
+      <ComboBox fx:id="comBoxClientsNames" layoutX="158.0" layoutY="91.0" onAction="#showClientsInfo" prefWidth="150.0" />
+      <Button fx:id="btnAddNewClient" layoutX="355.0" layoutY="91.0" mnemonicParsing="false" onAction="#createNewClient" text="New Client" />
       <TabPane layoutY="129.0" prefHeight="329.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Client">
@@ -37,17 +37,17 @@
                         <Label layoutX="51.0" layoutY="38.0" text="Name:" />
                         <Label layoutX="51.0" layoutY="73.0" text="Surname:" />
                         <Label layoutX="51.0" layoutY="112.0" text="Email:" />
-                        <Label fx:id="menoClient" layoutX="168.0" layoutY="35.0" text="Label">
+                        <Label fx:id="lblClientName" layoutX="168.0" layoutY="35.0" text="Label">
                            <font>
                               <Font name="Calibri Bold" size="19.0" />
                            </font>
                         </Label>
-                        <Label fx:id="priezviskoCleint" layoutX="168.0" layoutY="71.0" text="Label">
+                        <Label fx:id="lblClientSurname" layoutX="168.0" layoutY="71.0" text="Label">
                            <font>
                               <Font name="Calibri Bold" size="19.0" />
                            </font>
                         </Label>
-                        <Label fx:id="emailClient" layoutX="168.0" layoutY="109.0" text="Label">
+                        <Label fx:id="lblClientEmail" layoutX="168.0" layoutY="109.0" text="Label">
                            <font>
                               <Font name="Calibri Bold" size="19.0" />
                            </font>
@@ -60,18 +60,18 @@
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <Label layoutX="32.0" layoutY="27.0" text="Number of account" />
-                        <ComboBox fx:id="clientsAccounts" layoutX="174.0" layoutY="23.0" onAction="#showAccountsInfo" prefWidth="150.0" />
+                        <ComboBox fx:id="comBoxClientAccounts" layoutX="174.0" layoutY="23.0" onAction="#showAccountsInfo" prefWidth="150.0" />
                         <Separator layoutY="65.0" prefHeight="3.0" prefWidth="600.0" />
-                        <Label fx:id="accNumber" layoutX="32.0" layoutY="80.0" text="number" />
+                        <Label fx:id="lblAccNumber" layoutX="32.0" layoutY="80.0" text="number" />
                         <Label layoutX="146.0" layoutY="119.0" text="cash:" />
-                        <Label fx:id="money" layoutX="199.0" layoutY="113.0" text="money">
+                        <Label fx:id="lblMoney" layoutX="199.0" layoutY="113.0" text="money">
                            <font>
                               <Font name="Calibri Bold" size="21.0" />
                            </font>
                         </Label>
-                        <Button fx:id="newAccount" layoutX="20.0" layoutY="256.0" mnemonicParsing="false" onAction="#createNewAccount" text="Create new Account" />
-                        <Label fx:id="anyAccount" layoutX="411.0" layoutY="27.0" />
-                        <Label fx:id="infoNewAcc" layoutX="185.0" layoutY="260.0" />
+                        <Button fx:id="btnNewAccount" layoutX="20.0" layoutY="256.0" mnemonicParsing="false" onAction="#createNewAccount" text="Create new Account" />
+                        <Label fx:id="lblAnyAccount" layoutX="411.0" layoutY="27.0" />
+                        <Label fx:id="lblAccountCreated" layoutX="185.0" layoutY="260.0" />
                      </children></AnchorPane>
             </content>
           </Tab>
@@ -79,7 +79,7 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ComboBox fx:id="clientsCards" layoutX="225.0" layoutY="32.0" prefWidth="150.0" />
+                        <ComboBox fx:id="comBoxClientCards" layoutX="225.0" layoutY="32.0" prefWidth="150.0" />
                         <Label layoutX="125.0" layoutY="36.0" text="Cards of client" />
                         <Button layoutX="31.0" layoutY="255.0" mnemonicParsing="false" text="Add new Card" />
                         <Button layoutX="140.0" layoutY="255.0" mnemonicParsing="false" text="Change PIN" />
@@ -87,10 +87,10 @@
                         <Label layoutX="96.0" layoutY="120.0" text="active:" />
                         <Label layoutX="74.0" layoutY="150.0" text="date of expire:" />
                         <Label layoutX="67.0" layoutY="182.0" text="account number:" />
-                        <Label fx:id="pinLabel" layoutX="191.0" layoutY="86.0" />
-                        <Label fx:id="activeLabel" layoutX="190.0" layoutY="120.0" />
-                        <Label fx:id="expireDateLabel" layoutX="189.0" layoutY="150.0" />
-                        <Label fx:id="accNumLabel" layoutX="190.0" layoutY="182.0" />
+                        <Label fx:id="lblPin" layoutX="191.0" layoutY="86.0" />
+                        <Label fx:id="lblActive" layoutX="190.0" layoutY="120.0" />
+                        <Label fx:id="lblExpireDate" layoutX="189.0" layoutY="150.0" />
+                        <Label fx:id="lblAccNum" layoutX="190.0" layoutY="182.0" />
                      </children></AnchorPane>
                </content>
             </Tab>

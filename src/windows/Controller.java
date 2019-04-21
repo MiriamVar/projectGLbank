@@ -1,7 +1,7 @@
 package windows;
 
 import database.mysqlDatabase;
-import employee.employee;
+import employee.Employee;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -21,7 +21,7 @@ public class Controller {
     public Label wrongName;
     public Label wrongPassword;
     Stage dialogStage = new Stage();
-    employee emp;
+    Employee emp;
 
 
 

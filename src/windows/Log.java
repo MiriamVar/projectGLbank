@@ -3,7 +3,7 @@ package windows;
 
 import client.Client;
 import database.mysqlDatabase;
-import employee.employee;
+import employee.Employee;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,62 +24,62 @@ import java.util.Random;
 import client.Account;
 import client.Card;
 
+//add anotations to variables @FML
 
 public class Log<client> {
-    public Label name;
-    public Label surname;
+    public Label lblEmpName;
+    public Label lblEmpSurname;
 
-    public Button logOut;
+    public Button lblEmpLogOut;
     public Stage dialogStage;
 
-    public ComboBox clientsNames;
-    public Button addNewClient;
-    public Label menoClient;
-    public Label priezviskoCleint;
-    public Label emailClient;
+    public ComboBox comBoxClientsNames;
+    public Button btnAddNewClient;
+    public Label lblClientName;
+    public Label lblClientSurname;
+    public Label lblClientEmail;
 
-    public ComboBox clientsAccounts;
-    public Label accNumber;
-    public Label money;
-    public Label anyAccount;
-    public Label infoNewAcc;
-    public Label pinLabel;
-    public Label activeLabel;
-    public Label expireDateLabel;
-    public Label accNumLabel;
-    public ComboBox clientsCards;
+    public ComboBox comBoxClientAccounts;
+    public Label lblAccNumber;
+    public Label lblMoney;
+    public Label lblAnyAccount;
+    public Label lblAccountCreated;
+    public Label lblPin;
+    public Label lblActive;
+    public Label lblExpireDate;
+    public Label lblAccNum;
+    public ComboBox comBoxClientCards;
+    public Button btnNewAccount;
 
-    mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
-    private List<Client> client;
+    private mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
+    private List<Client> all_clients;
     private List<Account> account;
-    public Client clientik;
-    private Account accountik;
+    private Client actual_clientik;
+    private Account actual_accountik;
     private Integer selectedInxAcc;
-    private ObservableList<String> list2;
-    private ObservableList<String> list3;
     private List<Card> card;
 
 
     public void initialize () throws SQLException {
-        this.client = database.getAllClients();
+        this.all_clients = database.getAllClients();
         clients();
         showClientsInfo();
     }
 
-    //vytvori zozanm clintov a naplni dropdown
+    //vytvori zozanm clientov a naplni dropdown
     public void clients() throws SQLException{
         ObservableList<String> list = FXCollections.observableArrayList();
 
-        for (int i=0; i<this.client.size();i++){
-            list.add(this.client.get(i).getFname()+" "+this.client.get(i).getLname());
+        for (int i=0; i<this.all_clients.size();i++){
+            list.add(this.all_clients.get(i).getFname()+" "+this.all_clients.get(i).getLname());
         }
-        clientsNames.setItems(list);
+        comBoxClientsNames.setItems(list);
         System.out.println("naplni sa dropdown - clients");
-        clientsNames.getSelectionModel().select(0);
+        comBoxClientsNames.getSelectionModel().select(0);
         System.out.println("nastavi sa prvy client aby ho bolo vidno");
-        clientik=client.get(0);
-        System.out.println("id prveho clienta"+clientik);
-        showClientsInfo(clientik.getId());
+        actual_clientik=all_clients.get(0);
+        System.out.println("id prveho clienta"+actual_clientik);
+        showClientsInfo(actual_clientik.getId());
         System.out.println("vola sa metoda na ukazanie prveho usera");
 
     }
@@ -87,36 +87,36 @@ public class Log<client> {
     //vypise info hned o prvom useri
     public void showClientsInfo(int id) throws SQLException {
         System.out.println("vypisanie 1. usera");
-        menoClient.setText(clientik.getFname());
-        priezviskoCleint.setText(clientik.getLname());
-        emailClient.setText(clientik.getEmail());
+        lblClientName.setText(actual_clientik.getFname());
+        lblClientSurname.setText(actual_clientik.getLname());
+        lblClientEmail.setText(actual_clientik.getEmail());
 
     }
 
     //naplni labely s info o useroch
     public void showClientsInfo() throws SQLException {
-        int id = clientsNames.getSelectionModel().getSelectedIndex();
+        int id = comBoxClientsNames.getSelectionModel().getSelectedIndex();
         System.out.println("id vybraneho usera "+ id);
-        clientik = client.get(id);
+        actual_clientik = all_clients.get(id);
         System.out.println("podla vybraneho usera sa vypisuje info o nom");
-        menoClient.setText(clientik.getFname());
-        priezviskoCleint.setText(clientik.getLname());
-        emailClient.setText(clientik.getEmail());
+        lblClientName.setText(actual_clientik.getFname());
+        lblClientSurname.setText(actual_clientik.getLname());
+        lblClientEmail.setText(actual_clientik.getEmail());
 
-        this.account = database.getAllAccounts(clientik.getId());
-        System.out.println("clientikovo id "+clientik.getId());
+        this.account = database.getAllAccounts(actual_clientik.getId());
+        System.out.println("clientikovo id "+actual_clientik.getId());
         System.out.println("nastavenie accountu podla vybraneho usera");
 
         accounts();
         System.out.println("vola sa funkcia ktora naplni list accountov podla usera");
-        clientsAccounts.getSelectionModel().select(0);
+        comBoxClientAccounts.getSelectionModel().select(0);
         System.out.println("esteticky aby to odbre vyzeralo");
 
     }
 
-    public void showData(employee emp) {
-        name.setText(emp.getFname());
-        surname.setText(emp.getLname());
+    public void showData(Employee emp) {
+        lblEmpName.setText(emp.getFname());
+        lblEmpSurname.setText(emp.getLname());
     }
 
     public void logOut(ActionEvent actionEvent) throws IOException {
@@ -155,18 +155,18 @@ public class Log<client> {
     public void accounts() throws SQLException{
         System.out.println("KLIKOL SOM NA CLIENTA");
         System.out.println("velkost accounts listu je:"+ account.size());
-        list2 = FXCollections.observableArrayList();
+        ObservableList<String> list2 = FXCollections.observableArrayList();
         for (int i=0; i<this.account.size();i++){
             list2.add(this.account.get(i).getAccountNumber());
         }
-        clientsAccounts.setItems(list2);
+        comBoxClientAccounts.setItems(list2);
         System.out.println("list accountov je naplneny");
 
 
         if (selectedInxAcc == null){
             System.out.println("neni vybraty ziaden index accountu");
             selectedInxAcc =1;
-            clientsAccounts.getSelectionModel().select(0);
+            comBoxClientAccounts.getSelectionModel().select(0);
         }
 
         System.out.println("STARY INDEX JE "+selectedInxAcc);
@@ -177,25 +177,25 @@ public class Log<client> {
 
 
     public void showAccountsInfo() throws SQLException {
-        anyAccount.setText("");
-        selectedInxAcc = clientsAccounts.getSelectionModel().getSelectedIndex();
+        lblAnyAccount.setText("");
+        selectedInxAcc = comBoxClientAccounts.getSelectionModel().getSelectedIndex();
         System.out.println("NOVY INDEX JE o funkcii showAccounts info  "+selectedInxAcc);
         if (selectedInxAcc<0){
-            anyAccount.setText("Any account");
-            accNumber.setText("");
-            money.setText("");
+            lblAnyAccount.setText("Any account");
+            lblAccNumber.setText("");
+            lblMoney.setText("");
             return;
         }
-        accNumber.setText(account.get(selectedInxAcc).getAccountNumber());
+        lblAccNumber.setText(account.get(selectedInxAcc).getAccountNumber());
         System.out.println("nastavuje sa cislo uctu do labelu");
         System.out.println("selectedINDEX JEEEEE "+selectedInxAcc);
-        money.setText(String.valueOf(account.get(selectedInxAcc).getAmount()));
+        lblMoney.setText(String.valueOf(account.get(selectedInxAcc).getAmount()));
         System.out.println("nastavuju s apeniaze z uctu");
 
         if (selectedInxAcc == null){
             System.out.println("neni vybraty ziaden index accountu");
             selectedInxAcc =1;
-            clientsCards.getSelectionModel().select(0);
+            comBoxClientCards.getSelectionModel().select(0);
         }
 
         this.card = database.getAllCards(selectedInxAcc);
@@ -204,7 +204,7 @@ public class Log<client> {
 
         cards();
         System.out.println("vola sa funkcia ktora naplni list kart podla accountu");
-        clientsCards.getSelectionModel().select(0);
+        comBoxClientCards.getSelectionModel().select(0);
         System.out.println("esteticky aby to dobre vyzeralo");
     }
 
@@ -231,7 +231,7 @@ public class Log<client> {
 
     public void createNewAccount() throws SQLException {
        String numAcc =  generetatingAccoutnNumber();
-       database.addNewAccount(clientik.getId(), numAcc);
+       database.addNewAccount(actual_clientik.getId(), numAcc);
        this.account.add(new Account(numAcc));
        accounts();
     }
@@ -241,11 +241,11 @@ public class Log<client> {
     public void cards() throws SQLException{
         System.out.println("KLIKOL SOM NA KARTU");
         System.out.println("velkost cards listu je:"+ card.size());
-        list3 = FXCollections.observableArrayList();
+        ObservableList<String> list3 = FXCollections.observableArrayList();
         for (int i=0; i<this.card.size();i++){
             list3.add(String.valueOf(this.card.get(i).getId()));
         }
-        clientsCards.setItems(list3);
+        comBoxClientCards.setItems(list3);
         System.out.println("list cards je naplneny");
 
 

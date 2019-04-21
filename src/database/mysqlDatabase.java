@@ -3,23 +3,24 @@ package database;
 import client.Account;
 import client.Card;
 import client.Client;
-import employee.employee;
+import employee.Employee;
 import main.Globals;
-import windows.Log;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class mysqlDatabase {
 
-    private static mysqlDatabase database = new mysqlDatabase();
+    private static mysqlDatabase database;
 
     private mysqlDatabase(){
     }
 
     public static mysqlDatabase getInstanceOfDatabase(){
+        if (database == null){
+            database = new mysqlDatabase();
+        }
         return database;
     }
 
@@ -31,18 +32,16 @@ public class mysqlDatabase {
             System.out.println("Driver loaded!");
             connection = DriverManager.getConnection(Globals.url, Globals.user, Globals.password);
             return connection;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e){
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
 
-    static final String queryEmp1 = "select * from employee inner join loginemp on employee.id=loginemp.ide where login = ? and password = ?";
+    private static final String queryEmp1 = "select * from Employee inner join loginemp on Employee.id=loginemp.ide where login = ? and password = ?";
 
-    public employee getEmployee(String login, String pass){
+    public Employee getEmployee(String login, String pass){
         Connection con = getConnection();
         ResultSet res;
         try {
@@ -56,20 +55,18 @@ public class mysqlDatabase {
                 String lname = res.getString("lname");
                 int position = res.getInt("position");
 
-                employee employee = new employee(id,fname,lname,position);
-                return employee;
+                con.close();
+                return new Employee(id,fname,lname,position);
             }
-            con.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return null;
 
     }
 
-    static final String queryClient = "select * from client";
+    private static final String queryClient = "select * from client";
 
     public List<Client> getAllClients(){
         Connection con = getConnection();
@@ -87,6 +84,7 @@ public class mysqlDatabase {
                 Client client =  new Client(id, name, surname,email);
                clients.add(client);
             }
+            con.close();
             return clients;
 
         } catch (SQLException e) {
@@ -95,9 +93,9 @@ public class mysqlDatabase {
         return null;
     }
 
-    static final String queryNewClient = "insert into client(fname,lname,email) values(?,?,?)";
+    private static final String queryNewClient = "insert into client(fname,lname,email) values(?,?,?)";
 
-    public void addNewClient(Client client){
+    public boolean addNewClient(Client client){
         Connection conn = getConnection();
         System.out.println("vytvaram clienta");
         try{
@@ -106,20 +104,22 @@ public class mysqlDatabase {
             statement.setString(2,client.getLname());
             statement.setString(3,client.getEmail());
             if(statement.execute()){
+                conn.close();
                 System.out.println("client vytvorey");
+                return true;
             }else{
+                conn.close();
                 System.out.println("client nevytvoreny");
+                return false;
             }
-            conn.close();
-
         }  catch (SQLException e) {
             e.printStackTrace();
         }
-
+        return false;
     }
 
 
-    static final String queryAcc = "select * from account where idc =?";
+    private static final String queryAcc = "select * from account where idc =?";
 
     public List<Account> getAllAccounts(int idClient){
         Connection con = getConnection();
@@ -137,8 +137,8 @@ public class mysqlDatabase {
                     double amount = res.getDouble("amount");
                     Account account = new Account(id, idc, accountNum, amount);
                     accounts.add(account);
-
             }
+            con.close();
             return accounts;
 
         } catch (SQLException e) {
@@ -147,9 +147,9 @@ public class mysqlDatabase {
         return null;
     }
 
-    static final String queryNewAccount = "insert into account(idc,accNum,amount) values(?,?,?)";
+    private static final String queryNewAccount = "insert into account(idc,accNum,amount) values(?,?,?)";
 
-    public void addNewAccount(int idc, String number){
+    public boolean addNewAccount(int idc, String number){
         Connection conn = getConnection();
         System.out.println("vytvaram novy account v databaze");
         try{
@@ -158,19 +158,22 @@ public class mysqlDatabase {
             statement.setString(2,number);
             statement.setDouble(3,0);
             if(statement.execute()){
+                conn.close();
                 System.out.println("account nie je vytvorey");
+                return false;
             }else{
+                conn.close();
                 System.out.println("account je vytvoreny");
+                return true;
             }
-            conn.close();
 
         }  catch (SQLException e) {
             e.printStackTrace();
         }
-
+        return false;
     }
 
-    static final String queryCard = "select * from card where ida =?";
+    private static final String queryCard = "select * from card where ida =?";
 
     public List<Card> getAllCards(int idAcc){
         Connection con = getConnection();
@@ -192,6 +195,7 @@ public class mysqlDatabase {
                 cards.add(card);
 
             }
+            con.close();
             return cards;
 
         } catch (SQLException e) {

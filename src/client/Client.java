@@ -12,6 +12,7 @@ public class Client {
     private String email;
     private List<Account> accounts = new ArrayList<>();
 
+
     public Client(int id, String fname, String lname, String email) {
         this.id = id;
         this.fname = fname;
@@ -76,4 +77,6 @@ public class Client {
     public Account getAccount(int id){
         return this.accounts.get(id);
     }
+
+
 }

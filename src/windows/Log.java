@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
@@ -52,15 +53,19 @@ public class Log<client> {
     public Label lblAccNum;
     public ComboBox comBoxClientCards;
     public Button btnNewAccount;
+    public Label lblLogin;
+    public Label lblPass;
+    public Button btnResetPass;
+    public CheckBox checkBoxBlock;
+    public Button btnNewCard;
+    public Label lblMessNewCArd;
+    public Label lblMessChangePin;
 
     private mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
     private List<Client> all_clients;
-  //  private List<Account> account;
     private Client actual_clientik;
     private Account actual_accountik;
-    private Integer selectedInxAcc;
     private Card actual_card;
-   // private List<Card> card;
 
     public Log(){
     }
@@ -69,7 +74,7 @@ public class Log<client> {
     public void initialize () throws SQLException {
         this.all_clients = database.getAllClients();
         loadAllClients();
-        selectClient();
+
     }
 
 
@@ -91,12 +96,11 @@ public class Log<client> {
         actual_clientik=all_clients.get(0);
         showClientsInfo();
         actual_clientik.loadAccounts();
-
-
+        loadClientAccounts();
     }
 
     //vypise info o useroch
-    public void showClientsInfo() throws SQLException {
+    public void showClientsInfo() {
         if (actual_clientik == null){
             return;
         }
@@ -106,19 +110,25 @@ public class Log<client> {
     }
 
     //konkretny client
-    private void selectClient() {
+    public void selectClient() {
+        ObservableList<String> list = FXCollections.observableArrayList();
+        list.add("");
+        comBoxClientAccounts.setItems(list);
+        comBoxClientCards.setItems(list);
+        actual_clientik = null;
+        actual_accountik = null;
+        actual_card = null;
+
         if (all_clients.size() == 0){
             return;
         }
         int id = comBoxClientsNames.getSelectionModel().getSelectedIndex();
         actual_clientik = all_clients.get(id);
         System.out.println("id vybraneho usera "+ id);
-        try {
-            loadClientAccounts();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        comBoxClientAccounts.getSelectionModel().select(0);
+        actual_clientik.loadAccounts();
+        showClientsInfo();
+        loadClientAccounts();
+
     }
 
     //vypisuje data o zamestnancovi
@@ -162,15 +172,17 @@ public class Log<client> {
 
     //ACCOUNT
     //vypisuje accounty clienta
-    private void loadClientAccounts() throws SQLException{
+    private void loadClientAccounts() {
         if(this.actual_clientik == null || this.actual_clientik.countOfAccounts() ==0){
+            System.out.println("load client account spadol");
             return;
         }
         updateAccounts();
         actual_accountik = actual_clientik.getAccount(0);
         comBoxClientAccounts.getSelectionModel().select(0);
-        actual_accountik.loadCards();
         showAccountsInfo();
+        actual_accountik.loadCards();
+        loadCards();
     }
 
     //zobrazi vsetky accounty
@@ -183,31 +195,31 @@ public class Log<client> {
     }
 
     //vypise info o accounte
-    public void showAccountsInfo() throws SQLException {
+    public void showAccountsInfo() {
         lblAnyAccount.setText("");
-        lblAccNum.setText(this.actual_accountik.getAccountNumber());
+        lblAccNumber.setText(this.actual_accountik.getAccountNumber());
         lblMoney.setText(String.valueOf(this.actual_accountik.getAmount()));
     }
 
     //pouzivany acccount
     public void selectAccount(){
         if (actual_clientik == null || actual_clientik.countOfAccounts() == 0){
+            lblAnyAccount.setText("Any account");
+            lblAccNumber.setText("");
+            lblMoney.setText("");
+            System.out.println("select account - osetrenie" + actual_clientik);
             return;
         }
         int selected  = comBoxClientAccounts.getSelectionModel().getSelectedIndex();
-//        if (selectedInxAcc<0){
-//            lblAnyAccount.setText("Any account");
-//            lblAccNumber.setText("");
-//            lblMoney.setText("");
-//            return;
-//        }
-        actual_accountik = actual_clientik.getAccount(selected);
-        try {
-            loadCards();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (selected<0){
+            lblAccNumber.setText("");
+            lblMoney.setText("");
+            return;
         }
+        actual_accountik = actual_clientik.getAccount(selected);
+        showAccountsInfo();
         actual_accountik.loadCards();
+        loadCards();
         lblAnyAccount.setText("");
     }
 
@@ -222,7 +234,7 @@ public class Log<client> {
         System.out.println("desatmiestne sislo "+number);
 
         if (database.accNumberExist(number)){
-           return "";
+            return "";
         }
         else{
             return number;
@@ -230,23 +242,28 @@ public class Log<client> {
     }
 
 
-    public void createNewAccount() throws SQLException {
+    public void createNewAccount() {
        String numAcc =  generetatingAccoutnNumber();
+        if (numAcc.equals("")){
+            return;
+        }
         if(!this.actual_clientik.addAccount(numAcc)){
             lblAccountCreated.setText("Account not created");
         }
-       loadClientAccounts();
+        actual_clientik.loadAccounts();
+        loadClientAccounts();
     }
 
 
     //CARD
-    public void loadCards() throws SQLException{
+    public void loadCards() {
         if(actual_accountik ==null || actual_accountik.getCountOfCards() == 0){
             return;
         }
         updateCards();
         actual_card =actual_accountik.getCard(0);
         comBoxClientCards.getSelectionModel().select(0);
+        showCardInfo();
     }
 
     private void updateCards(){
@@ -265,52 +282,38 @@ public class Log<client> {
     }
 
     public void selectCard(){
+        lblPin.setText("");
+        lblActive.setText("");
+        lblAccNum.setText("");
+        lblExpireDate.setText("");
+
         if(actual_accountik == null || this.actual_accountik.getCountOfCards() ==0){
             return;
         }
         int selected = comBoxClientCards.getSelectionModel().getSelectedIndex();
+        if (selected<0){
+            lblAccNumber.setText("");
+            lblMoney.setText("");
+            return;
+        }
         actual_card = actual_accountik.getCard(selected);
         showCardInfo();
 
+
     }
 
-    private String generatingPIN(){
-        Random random = new Random();
-        String pinNumber ="";
-        for (int i=0;i<4;i++){
-            pinNumber = pinNumber + random.nextInt(10);
+    public void createNewCard() {
+        if(!this.actual_accountik.addCard()){
+           lblMessNewCArd.setText("Cand not created");
         }
-
-        System.out.println("pin "+pinNumber);
-        return pinNumber;
-    }
-
-    //dokoncit
-    private int geneteratingMonth(){
-        LocalDate date = LocalDate.now();
-        String txtDate = String.valueOf(LocalDate.from(date));
-        System.out.println("Datum "+txtDate);
-        return txtDate;
-    }
-
-    //dokoncit
-    private int geneteratingYear(){
-        LocalDate date = LocalDate.now();
-        String txtDate = String.valueOf(LocalDate.from(date));
-        System.out.println("Datum "+txtDate);
-        return txtDate;
-    }
-
-    public void createNewCard() throws SQLException {
-        String pin =  generatingPIN();
-        int month = geneteratingMonth();
-        int year = geneteratingYear();
-        if(!this.actual_accountik.addCard(pin,month,year)){
-           //vypis ked sa karta nevytvori
-        }
+        lblMessNewCArd.setText("Card created");
+        actual_accountik.loadCards();
+        updateCards();
         loadCards();
     }
 
-
+    public void changePin(){
+        //urobit
+    }
 
 }

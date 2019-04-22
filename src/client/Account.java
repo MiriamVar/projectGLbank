@@ -2,8 +2,11 @@ package client;
 
 import database.mysqlDatabase;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class Account {
     private int id;
@@ -48,8 +51,13 @@ public class Account {
     }
 
 
-    public boolean addCard(String pin, int month, int year){
-            mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
+    public boolean addCard(){
+        mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
+        LocalDate date = LocalDate.now();
+        int month = date.getMonthValue();
+        int year = (date.getYear()+3) % 100;
+        System.out.println("mesiac "+month+" year "+year);
+        String pin = generatingPIN();
             return database.addNewCard(this.id,pin,month,year);
         }
 
@@ -71,6 +79,18 @@ public class Account {
 
     public Card getCard(int id){
         return this.cards.get(id);
+    }
+
+
+    private String generatingPIN(){
+        Random random = new Random();
+        String pinNumber ="";
+        for (int i=0;i<4;i++){
+            pinNumber = pinNumber + random.nextInt(10);
+        }
+
+        System.out.println("pin "+pinNumber);
+        return pinNumber;
     }
 
 }

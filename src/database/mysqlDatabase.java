@@ -210,7 +210,7 @@ public class mysqlDatabase {
         Connection conn = getConnection();
         System.out.println("vytvaram novu kartu v databaze");
         try{
-            PreparedStatement statement = conn.prepareStatement(queryNewAccount);
+            PreparedStatement statement = conn.prepareStatement(queryNewCard);
             statement.setInt(1,ida);
             statement.setString(2,pin);
             statement.setBoolean(3,true);
@@ -232,7 +232,7 @@ public class mysqlDatabase {
         return false;
     }
 
-    static final String queryAccountNumber = "select count(id) from account where accnum = ?";
+    static final String queryAccountNumber = "select count(id) as countId from account where accnum = ?";
 
     public boolean accNumberExist(String accNum){
         Connection conn = getConnection();
@@ -242,7 +242,7 @@ public class mysqlDatabase {
             stmnt.setString(1,accNum);
             res = stmnt.executeQuery();
             res.next();
-            int count = res.getInt("count");
+            int count = res.getInt("countId");
             conn.close();
             if (count == 0){
                 return false;

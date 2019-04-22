@@ -18,6 +18,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -53,68 +55,74 @@ public class Log<client> {
 
     private mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
     private List<Client> all_clients;
-    private List<Account> account;
+  //  private List<Account> account;
     private Client actual_clientik;
     private Account actual_accountik;
     private Integer selectedInxAcc;
-    private List<Card> card;
+    private Card actual_card;
+   // private List<Card> card;
+
+    public Log(){
+    }
 
 
     public void initialize () throws SQLException {
         this.all_clients = database.getAllClients();
-        clients();
-        showClientsInfo();
+        loadAllClients();
+        selectClient();
     }
 
+
     //vytvori zozanm clientov a naplni dropdown
-    public void clients() throws SQLException{
+    public void loadAllClients() throws SQLException{
+        if(all_clients.size() == 0){
+            //vipis ze nie je ziaden klient
+            actual_clientik = null;
+            return;
+        }
+
         ObservableList<String> list = FXCollections.observableArrayList();
 
         for (int i=0; i<this.all_clients.size();i++){
             list.add(this.all_clients.get(i).getFname()+" "+this.all_clients.get(i).getLname());
         }
         comBoxClientsNames.setItems(list);
-        System.out.println("naplni sa dropdown - clients");
         comBoxClientsNames.getSelectionModel().select(0);
-        System.out.println("nastavi sa prvy client aby ho bolo vidno");
         actual_clientik=all_clients.get(0);
-        System.out.println("id prveho clienta"+actual_clientik);
-        showClientsInfo(actual_clientik.getId());
-        System.out.println("vola sa metoda na ukazanie prveho usera");
+        showClientsInfo();
+        actual_clientik.loadAccounts();
+
 
     }
 
-    //vypise info hned o prvom useri
-    public void showClientsInfo(int id) throws SQLException {
-        System.out.println("vypisanie 1. usera");
-        lblClientName.setText(actual_clientik.getFname());
-        lblClientSurname.setText(actual_clientik.getLname());
-        lblClientEmail.setText(actual_clientik.getEmail());
-
-    }
-
-    //naplni labely s info o useroch
+    //vypise info o useroch
     public void showClientsInfo() throws SQLException {
-        int id = comBoxClientsNames.getSelectionModel().getSelectedIndex();
-        System.out.println("id vybraneho usera "+ id);
-        actual_clientik = all_clients.get(id);
-        System.out.println("podla vybraneho usera sa vypisuje info o nom");
+        if (actual_clientik == null){
+            return;
+        }
         lblClientName.setText(actual_clientik.getFname());
         lblClientSurname.setText(actual_clientik.getLname());
         lblClientEmail.setText(actual_clientik.getEmail());
-
-        this.account = database.getAllAccounts(actual_clientik.getId());
-        System.out.println("clientikovo id "+actual_clientik.getId());
-        System.out.println("nastavenie accountu podla vybraneho usera");
-
-        accounts();
-        System.out.println("vola sa funkcia ktora naplni list accountov podla usera");
-        comBoxClientAccounts.getSelectionModel().select(0);
-        System.out.println("esteticky aby to odbre vyzeralo");
-
     }
 
-    public void showData(Employee emp) {
+    //konkretny client
+    private void selectClient() {
+        if (all_clients.size() == 0){
+            return;
+        }
+        int id = comBoxClientsNames.getSelectionModel().getSelectedIndex();
+        actual_clientik = all_clients.get(id);
+        System.out.println("id vybraneho usera "+ id);
+        try {
+            loadClientAccounts();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        comBoxClientAccounts.getSelectionModel().select(0);
+    }
+
+    //vypisuje data o zamestnancovi
+     void showData(Employee emp) {
         lblEmpName.setText(emp.getFname());
         lblEmpSurname.setText(emp.getLname());
     }
@@ -135,6 +143,7 @@ public class Log<client> {
         stage.show();
     }
 
+    //vytvaranie noveho clienta
     public void createNewClient(ActionEvent actionEvent) throws IOException {
         Node node = (Node) actionEvent.getSource();
         dialogStage = (Stage) node.getScene().getWindow();
@@ -152,63 +161,58 @@ public class Log<client> {
 
 
     //ACCOUNT
-    public void accounts() throws SQLException{
-        System.out.println("KLIKOL SOM NA CLIENTA");
-        System.out.println("velkost accounts listu je:"+ account.size());
-        ObservableList<String> list2 = FXCollections.observableArrayList();
-        for (int i=0; i<this.account.size();i++){
-            list2.add(this.account.get(i).getAccountNumber());
-        }
-        comBoxClientAccounts.setItems(list2);
-        System.out.println("list accountov je naplneny");
-
-
-        if (selectedInxAcc == null){
-            System.out.println("neni vybraty ziaden index accountu");
-            selectedInxAcc =1;
-            comBoxClientAccounts.getSelectionModel().select(0);
-        }
-
-        System.out.println("STARY INDEX JE "+selectedInxAcc);
-        showAccountsInfo();
-        System.out.println("spusta sa funkcia na vypisanie account info");
-
-    }
-
-
-    public void showAccountsInfo() throws SQLException {
-        lblAnyAccount.setText("");
-        selectedInxAcc = comBoxClientAccounts.getSelectionModel().getSelectedIndex();
-        System.out.println("NOVY INDEX JE o funkcii showAccounts info  "+selectedInxAcc);
-        if (selectedInxAcc<0){
-            lblAnyAccount.setText("Any account");
-            lblAccNumber.setText("");
-            lblMoney.setText("");
+    //vypisuje accounty clienta
+    private void loadClientAccounts() throws SQLException{
+        if(this.actual_clientik == null || this.actual_clientik.countOfAccounts() ==0){
             return;
         }
-        lblAccNumber.setText(account.get(selectedInxAcc).getAccountNumber());
-        System.out.println("nastavuje sa cislo uctu do labelu");
-        System.out.println("selectedINDEX JEEEEE "+selectedInxAcc);
-        lblMoney.setText(String.valueOf(account.get(selectedInxAcc).getAmount()));
-        System.out.println("nastavuju s apeniaze z uctu");
-
-        if (selectedInxAcc == null){
-            System.out.println("neni vybraty ziaden index accountu");
-            selectedInxAcc =1;
-            comBoxClientCards.getSelectionModel().select(0);
-        }
-
-        this.card = database.getAllCards(selectedInxAcc);
-        System.out.println("account id "+selectedInxAcc);
-        System.out.println("nastavenie card podla vybraneho accountu");
-
-        cards();
-        System.out.println("vola sa funkcia ktora naplni list kart podla accountu");
-        comBoxClientCards.getSelectionModel().select(0);
-        System.out.println("esteticky aby to dobre vyzeralo");
+        updateAccounts();
+        actual_accountik = actual_clientik.getAccount(0);
+        comBoxClientAccounts.getSelectionModel().select(0);
+        actual_accountik.loadCards();
+        showAccountsInfo();
     }
 
-    public String generetatingAccoutnNumber(){
+    //zobrazi vsetky accounty
+    private void updateAccounts(){
+        ObservableList<String> list2 = FXCollections.observableArrayList();
+        for (Account swap : this.actual_clientik.getAccounts()){
+            list2.add(swap.getAccountNumber());
+        }
+        comBoxClientAccounts.setItems(list2);
+    }
+
+    //vypise info o accounte
+    public void showAccountsInfo() throws SQLException {
+        lblAnyAccount.setText("");
+        lblAccNum.setText(this.actual_accountik.getAccountNumber());
+        lblMoney.setText(String.valueOf(this.actual_accountik.getAmount()));
+    }
+
+    //pouzivany acccount
+    public void selectAccount(){
+        if (actual_clientik == null || actual_clientik.countOfAccounts() == 0){
+            return;
+        }
+        int selected  = comBoxClientAccounts.getSelectionModel().getSelectedIndex();
+//        if (selectedInxAcc<0){
+//            lblAnyAccount.setText("Any account");
+//            lblAccNumber.setText("");
+//            lblMoney.setText("");
+//            return;
+//        }
+        actual_accountik = actual_clientik.getAccount(selected);
+        try {
+            loadCards();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        actual_accountik.loadCards();
+        lblAnyAccount.setText("");
+    }
+
+    //vytvaranie cisla uctu
+    private String generetatingAccoutnNumber(){
         Random random = new Random();
         String number ="";
         for (int i=0;i<10;i++){
@@ -217,39 +221,96 @@ public class Log<client> {
 
         System.out.println("desatmiestne sislo "+number);
 
-        for (int i=0;i < this.account.size(); i++){
-            if (account.get(i).getAccountNumber().equals(number)){
-                System.out.println("Taky account uz existuje");
-            }
-            else {
-                System.out.println("vytvaram novy account .. cislo uz mam");
-                return number;
-            }
+        if (database.accNumberExist(number)){
+           return "";
         }
-        return number;
+        else{
+            return number;
+        }
     }
+
 
     public void createNewAccount() throws SQLException {
        String numAcc =  generetatingAccoutnNumber();
-       database.addNewAccount(actual_clientik.getId(), numAcc);
-       this.account.add(new Account(numAcc));
-       accounts();
+        if(!this.actual_clientik.addAccount(numAcc)){
+            lblAccountCreated.setText("Account not created");
+        }
+       loadClientAccounts();
     }
 
 
     //CARD
-    public void cards() throws SQLException{
-        System.out.println("KLIKOL SOM NA KARTU");
-        System.out.println("velkost cards listu je:"+ card.size());
+    public void loadCards() throws SQLException{
+        if(actual_accountik ==null || actual_accountik.getCountOfCards() == 0){
+            return;
+        }
+        updateCards();
+        actual_card =actual_accountik.getCard(0);
+        comBoxClientCards.getSelectionModel().select(0);
+    }
+
+    private void updateCards(){
         ObservableList<String> list3 = FXCollections.observableArrayList();
-        for (int i=0; i<this.card.size();i++){
-            list3.add(String.valueOf(this.card.get(i).getId()));
+        for (Card swap : actual_accountik.getCards()){
+            list3.add(String.valueOf(swap.getId()));
         }
         comBoxClientCards.setItems(list3);
-        System.out.println("list cards je naplneny");
+    }
 
+    private void showCardInfo(){
+        lblPin.setText(this.actual_card.getPin());
+        lblActive.setText(String.valueOf(this.actual_card.isActive()));
+        lblExpireDate.setText(this.actual_card.getExpireM()+"/"+this.actual_card.getExpireY());
+        lblAccNum.setText(String.valueOf(this.actual_card.getIda()));
+    }
 
+    public void selectCard(){
+        if(actual_accountik == null || this.actual_accountik.getCountOfCards() ==0){
+            return;
+        }
+        int selected = comBoxClientCards.getSelectionModel().getSelectedIndex();
+        actual_card = actual_accountik.getCard(selected);
+        showCardInfo();
 
     }
+
+    private String generatingPIN(){
+        Random random = new Random();
+        String pinNumber ="";
+        for (int i=0;i<4;i++){
+            pinNumber = pinNumber + random.nextInt(10);
+        }
+
+        System.out.println("pin "+pinNumber);
+        return pinNumber;
+    }
+
+    //dokoncit
+    private int geneteratingMonth(){
+        LocalDate date = LocalDate.now();
+        String txtDate = String.valueOf(LocalDate.from(date));
+        System.out.println("Datum "+txtDate);
+        return txtDate;
+    }
+
+    //dokoncit
+    private int geneteratingYear(){
+        LocalDate date = LocalDate.now();
+        String txtDate = String.valueOf(LocalDate.from(date));
+        System.out.println("Datum "+txtDate);
+        return txtDate;
+    }
+
+    public void createNewCard() throws SQLException {
+        String pin =  generatingPIN();
+        int month = geneteratingMonth();
+        int year = geneteratingYear();
+        if(!this.actual_accountik.addCard(pin,month,year)){
+           //vypis ked sa karta nevytvori
+        }
+        loadCards();
+    }
+
+
 
 }

@@ -16,6 +16,11 @@ public class Card {
         this.expireM = expireM;
         this.expireY = expireY;
     }
+    public Card(String pin, int expireM, int expireY){
+        this.pin = pin;
+        this.expireM = expireM;
+        this.expireY = expireY;
+    }
 
     public int getId() {
         return id;

@@ -204,5 +204,54 @@ public class mysqlDatabase {
         return null;
     }
 
+    private static final String queryNewCard = "insert into card(ida,pin,active,expireM,expireY) values(?,?,?,?,?)";
+
+    public boolean addNewCard(int ida,String pin, int month, int year){
+        Connection conn = getConnection();
+        System.out.println("vytvaram novu kartu v databaze");
+        try{
+            PreparedStatement statement = conn.prepareStatement(queryNewAccount);
+            statement.setInt(1,ida);
+            statement.setString(2,pin);
+            statement.setBoolean(3,true);
+            statement.setInt(4,month);
+            statement.setInt(5,year);
+            if(statement.execute()){
+                conn.close();
+                System.out.println("karta nie je vytvorena");
+                return false;
+            }else{
+                conn.close();
+                System.out.println("karta je vytvorena");
+                return true;
+            }
+
+        }  catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    static final String queryAccountNumber = "select count(id) from account where accnum = ?";
+
+    public boolean accNumberExist(String accNum){
+        Connection conn = getConnection();
+        ResultSet res;
+        try {
+            PreparedStatement stmnt = conn.prepareStatement(queryAccountNumber);
+            stmnt.setString(1,accNum);
+            res = stmnt.executeQuery();
+            res.next();
+            int count = res.getInt("count");
+            conn.close();
+            if (count == 0){
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
 
 }

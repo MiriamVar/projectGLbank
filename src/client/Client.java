@@ -53,19 +53,27 @@ public class Client {
         this.accounts = accounts;
     }
 
-    public boolean addAccount(){
-        return false;
+    public boolean addAccount(String accNum){
+        mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
+        return database.addNewAccount(this.id,accNum);
     }
 
     public boolean loadAccounts(){
         mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
-        List<Account> swapAccounts;
-        swapAccounts = database.getAllAccounts(this.id);
+        List<Account> swapAccounts = database.getAllAccounts(this.id);
         if (swapAccounts == null || swapAccounts.size() == 0){
             return false;
         }else {
            accounts = swapAccounts;
            return true;
         }
+    }
+
+    public int countOfAccounts(){
+        return this.accounts.size();
+    }
+
+    public Account getAccount(int id){
+        return this.accounts.get(id);
     }
 }

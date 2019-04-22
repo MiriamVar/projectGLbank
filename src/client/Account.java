@@ -1,5 +1,7 @@
 package client;
 
+import database.mysqlDatabase;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +47,30 @@ public class Account {
         this.cards = cards;
     }
 
-    public boolean addCard(){
-        return false;
+
+    public boolean addCard(String pin, int month, int year){
+            mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
+            return database.addNewCard(this.id,pin,month,year);
+        }
+
+    public boolean loadCards(){
+        mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
+        List<Card> swapCards = database.getAllCards(this.id);
+        if (swapCards == null || swapCards.size() == 0){
+            return false;
+        }
+        else{
+            cards = swapCards;
+            return true;
+        }
     }
+
+    public int getCountOfCards(){
+        return this.cards.size();
+    }
+
+    public Card getCard(int id){
+        return this.cards.get(id);
+    }
+
 }

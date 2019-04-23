@@ -3,8 +3,10 @@ package database;
 import client.Account;
 import client.Card;
 import client.Client;
+import client.LoginClient;
 import employee.Employee;
 import main.Globals;
+import windows.Log;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -253,5 +255,57 @@ public class mysqlDatabase {
         return true;
     }
 
+    static final String queryLoginClient = "select count(login) as countLogin from loginclient where login = ?";
 
+    public boolean loginClientExist(String login){
+        Connection conn = getConnection();
+        ResultSet res;
+        try {
+            PreparedStatement stmnt = conn.prepareStatement(queryLoginClient);
+            stmnt.setString(1,login);
+            res = stmnt.executeQuery();
+            res.next();
+            int count = res.getInt("countLogin");
+            conn.close();
+            if (count == 0){
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    private static final String queryNewLoginClient = "insert into loginclient(idc,login,password) values(?,?,?)";
+
+    public boolean addNewLoginClient(Client client){
+        Connection conn = getConnection();
+        System.out.println("vytvaram login clienta");
+        String login;
+        String password;
+        try{
+            PreparedStatement statement = conn.prepareStatement(queryNewLoginClient);
+            statement.setInt(1,client.getId());
+            login = Log.generatingLogin();
+            password = Log.generatingPass();
+            if (login.equals("")){
+                System.out.println("login je prazdny");
+                return false;
+            }
+            statement.setString(2,login);
+            statement.setString(3,password);
+            if(statement.execute()){
+                conn.close();
+                System.out.println("login client vytvorey");
+                return true;
+            }else{
+                conn.close();
+                System.out.println("login client nevytvoreny");
+                return false;
+            }
+        }  catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

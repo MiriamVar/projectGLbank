@@ -1,5 +1,7 @@
 package client;
 
+import database.mysqlDatabase;
+
 import java.util.Random;
 
 public class LoginClient {
@@ -31,26 +33,4 @@ public class LoginClient {
         return password;
     }
 
-    private String generatingLogin(){
-        Random random = new Random();
-        String userName ="";
-        for (int i=0;i<7;i++){
-            userName = userName + random.nextInt(10);
-        }
-
-        System.out.println("login "+userName);
-        return userName;
-    }
-
-
-    private String generatingPass(){
-        Random random = new Random();
-        String userPassowrd ="";
-        for (int i=0;i<7;i++){
-            userPassowrd = userPassowrd + random.nextInt(26)+65;
-        }
-
-        System.out.println("passowrd "+userPassowrd);
-        return userPassowrd;
-    }
 }

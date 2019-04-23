@@ -316,4 +316,34 @@ public class Log<client> {
         //urobit
     }
 
+    public static String generatingLogin(){
+
+        Random random = new Random();
+        String userName ="";
+        for (int i=0;i<7;i++){
+            userName = userName + random.nextInt(10);
+        }
+
+        System.out.println("login "+userName);
+        mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
+        if (database.loginClientExist(userName)){
+            return "";
+        }
+        else{
+            return userName;
+        }
+    }
+
+
+    public static String generatingPass(){
+        Random random = new Random();
+        String userPassowrd ="";
+        for (int i=0;i<7;i++){
+            userPassowrd = userPassowrd + random.nextInt(26)+65;
+        }
+
+        System.out.println("passowrd "+userPassowrd);
+        return userPassowrd;
+    }
+
 }

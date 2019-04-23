@@ -82,8 +82,8 @@
                      <children>
                         <ComboBox fx:id="comBoxClientCards" layoutX="225.0" layoutY="32.0" onAction="#selectCard" prefWidth="150.0" />
                         <Label layoutX="125.0" layoutY="36.0" text="Cards of client" />
-                        <Button fx:id="btnNewCard" layoutX="31.0" layoutY="255.0" mnemonicParsing="false" onAction="#createNewCard" text="Add new Card" />
-                        <Button layoutX="140.0" layoutY="255.0" mnemonicParsing="false" text="Change PIN" />
+                        <Button fx:id="btnNewCard" layoutX="68.0" layoutY="255.0" mnemonicParsing="false" onAction="#createNewCard" text="Add new Card" />
+                        <Button layoutX="391.0" layoutY="255.0" mnemonicParsing="false" text="Change PIN" />
                         <Label layoutX="102.0" layoutY="86.0" text="pin:" />
                         <Label layoutX="96.0" layoutY="120.0" text="active:" />
                         <Label layoutX="74.0" layoutY="150.0" text="date of expire:" />
@@ -92,6 +92,8 @@
                         <Label fx:id="lblActive" layoutX="190.0" layoutY="120.0" />
                         <Label fx:id="lblExpireDate" layoutX="189.0" layoutY="150.0" />
                         <Label fx:id="lblAccNum" layoutX="190.0" layoutY="182.0" />
+                        <Label fx:id="lblMessNewCArd" layoutX="191.0" layoutY="259.0" />
+                        <Label fx:id="lblMessChangePin" layoutX="492.0" layoutY="259.0" />
                      </children></AnchorPane>
                </content>
             </Tab>

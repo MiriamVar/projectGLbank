@@ -30,6 +30,7 @@ public class newClient {
         mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
 
         database.addNewClient(newClient);
+        database.addNewLoginClient(newClient);
 
         Node node = (Node) actionEvent.getSource();
         Stage dialogStage = (Stage) node.getScene().getWindow();

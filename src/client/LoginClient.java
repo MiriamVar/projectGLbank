@@ -1,8 +1,5 @@
 package client;
 
-import database.mysqlDatabase;
-
-import java.util.Random;
 
 public class LoginClient {
     private int id;
@@ -16,6 +13,7 @@ public class LoginClient {
         this.login = login;
         this.password = password;
     }
+
 
     public int getId() {
         return id;
@@ -33,4 +31,19 @@ public class LoginClient {
         return password;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setIdc(int idc) {
+        this.idc = idc;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

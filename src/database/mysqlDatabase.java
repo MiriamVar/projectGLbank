@@ -1,9 +1,6 @@
 package database;
 
-import client.Account;
-import client.Card;
-import client.Client;
-import client.LoginClient;
+import client.*;
 import employee.Employee;
 import main.Globals;
 import windows.Log;
@@ -97,27 +94,35 @@ public class mysqlDatabase {
 
     private static final String queryNewClient = "insert into client(fname,lname,email) values(?,?,?)";
 
-    public boolean addNewClient(Client client){
+    public int addNewClient(Client client){
         Connection conn = getConnection();
         System.out.println("vytvaram clienta");
+        int ret =-1;
         try{
-            PreparedStatement statement = conn.prepareStatement(queryNewClient);
+            PreparedStatement statement = conn.prepareStatement(queryNewClient, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1,client.getFname());
             statement.setString(2,client.getLname());
             statement.setString(3,client.getEmail());
+
             if(statement.execute()){
-                conn.close();
-                System.out.println("client vytvorey");
-                return true;
-            }else{
-                conn.close();
                 System.out.println("client nevytvoreny");
-                return false;
+                conn.close();
+                return ret;
+            }else{
+                System.out.println("client vytvoreny");
+                ResultSet res123 = statement.getGeneratedKeys();
+                if (res123.next()){
+                    ret = res123.getInt(1);
+                    System.out.println("NOOOOOOVE ID JE: "+ret);
+                    return ret;
+                }
+                conn.close();
+                return ret;
             }
-        }  catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return ret;
     }
 
 
@@ -278,16 +283,16 @@ public class mysqlDatabase {
 
     private static final String queryNewLoginClient = "insert into loginclient(idc,login,password) values(?,?,?)";
 
-    public boolean addNewLoginClient(Client client){
+    public boolean addNewLoginClient(int clientID){
         Connection conn = getConnection();
         System.out.println("vytvaram login clienta");
         String login;
         String password;
         try{
             PreparedStatement statement = conn.prepareStatement(queryNewLoginClient);
-            statement.setInt(1,client.getId());
+            statement.setInt(1,clientID);
             login = Log.generatingLogin();
-            password = Log.generatingPass();
+            password =Log.generatingPass();
             if (login.equals("")){
                 System.out.println("login je prazdny");
                 return false;
@@ -308,4 +313,98 @@ public class mysqlDatabase {
         }
         return false;
     }
+
+    private static final String queryLoginClientLbl = "select login from loginclient where idc = ?";
+
+    public String userNameLoginClient(int clientID){
+        Connection conn = getConnection();
+        ResultSet res;
+        String login = null;
+        try {
+            PreparedStatement stmnt = conn.prepareStatement(queryLoginClientLbl);
+            stmnt.setInt(1,clientID);
+            res = stmnt.executeQuery();
+            res.next();
+            login = res.getString("login");
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return login;
+    }
+
+    static final String queryResetPass = "update loginclient set password = ? where idc = ?";
+
+    public String resetIBPass(int clientID) {
+        Connection con = getConnection();
+        String newPass = Log.generatingPass();
+        try {
+            PreparedStatement statement = con.prepareStatement(queryResetPass);
+            statement.setString(1,newPass);
+            statement.setInt(2,clientID);
+            statement.executeUpdate();
+            return newPass;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return newPass;
+    }
+
+    private static final String queryClientLogin = "select * from loginclient where idc =?";
+
+    public List<LoginClient> getAllLogins(int idClient){
+        Connection con = getConnection();
+        System.out.println("hello you there");
+        ResultSet res;
+        List<LoginClient> logins = new ArrayList<>();
+        try {
+            PreparedStatement stmnt = con.prepareStatement(queryClientLogin);
+            stmnt.setInt(1,idClient);
+            res = stmnt.executeQuery();
+            while (res.next()){
+                int id = res.getInt("id");
+                int idc = res.getInt("idc");
+                String login = res.getString("login");
+                String pass = res.getString("password");
+                LoginClient loginClient = new LoginClient(id, idc, login,pass);
+                logins.add(loginClient);
+            }
+            con.close();
+            return logins;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return logins;
+    }
+
+    private static final String queryLastrecords = "select * from loginhistory order by (select id from loginclient where idc = ?) desc limit 3";
+
+    public List<LoginHistory> getThreeLastRecords(int idClient){
+        Connection con = getConnection();
+        System.out.println("aaaachhhh");
+        ResultSet res;
+        List<LoginHistory> loginHistories = new ArrayList<>();
+        try {
+            PreparedStatement stmnt = con.prepareStatement(queryLastrecords);
+            stmnt.setInt(1,idClient);
+            res = stmnt.executeQuery();
+            while (res.next()){
+                int id = res.getInt("id");
+                int idl = res.getInt("idl");
+                boolean success = res.getBoolean("success");
+                Date dateLog = res.getDate("logDate");
+                LoginHistory record = new LoginHistory(id, idl,success,dateLog);
+                loginHistories.add(record);
+            }
+            con.close();
+            return loginHistories;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return loginHistories;
+    }
+
 }

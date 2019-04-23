@@ -19,13 +19,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
 import client.Account;
 import client.Card;
+import client.LoginHistory;
 
 //add anotations to variables @FML
 
@@ -54,7 +53,6 @@ public class Log<client> {
     public ComboBox comBoxClientCards;
     public Button btnNewAccount;
     public Label lblLogin;
-    public Label lblPass;
     public Button btnResetPass;
     public CheckBox checkBoxBlock;
     public Button btnNewCard;
@@ -66,6 +64,7 @@ public class Log<client> {
     private Client actual_clientik;
     private Account actual_accountik;
     private Card actual_card;
+
 
     public Log(){
     }
@@ -128,7 +127,8 @@ public class Log<client> {
         actual_clientik.loadAccounts();
         showClientsInfo();
         loadClientAccounts();
-
+        showIBinfo();
+        setBlockIB();
     }
 
     //vypisuje data o zamestnancovi
@@ -346,4 +346,26 @@ public class Log<client> {
         return userPassowrd;
     }
 
+    private void showIBinfo(){
+        int id = actual_clientik.getId();
+        String userName = database.userNameLoginClient(id);
+        lblLogin.setText(userName);
+    }
+
+
+    public void btnResetPass(ActionEvent actionEvent) {
+        int id = actual_clientik.getId();
+        database.resetIBPass(id);
+    }
+
+
+    public void setBlockIB() {
+        int id = actual_clientik.getId();
+        List<LoginHistory> threeLastRecords  =database.getThreeLastRecords(id);
+        for(int i =0; i<threeLastRecords.size();i++){
+         if (!threeLastRecords.get(i).isSuccess()){
+             checkBoxBlock.setSelected(true);
+         }
+        }
+    }
 }

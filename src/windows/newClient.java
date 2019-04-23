@@ -29,8 +29,12 @@ public class newClient {
         Client newClient = new Client(clientsName,clientsSurname,clientsEmail);
         mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
 
-        database.addNewClient(newClient);
-        database.addNewLoginClient(newClient);
+        int idClient = database.addNewClient(newClient);
+        if (idClient <0){
+            System.out.println("neexistujuce id clienta");
+        }else{
+            database.addNewLoginClient(idClient);
+        }
 
         Node node = (Node) actionEvent.getSource();
         Stage dialogStage = (Stage) node.getScene().getWindow();

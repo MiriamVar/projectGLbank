@@ -365,7 +365,14 @@ public class Log<client> {
         for(int i =0; i<threeLastRecords.size();i++){
          if (!threeLastRecords.get(i).isSuccess()){
              checkBoxBlock.setSelected(true);
+             database.deleteThreeLastRecords(id);
          }
         }
     }
+
+//    public void blockByEmp(ActionEvent actionEvent) {
+//        if(checkBoxBlock.setSelected(true)){
+//
+//        }
+//    }
 }

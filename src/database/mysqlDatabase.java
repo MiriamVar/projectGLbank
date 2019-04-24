@@ -407,4 +407,19 @@ public class mysqlDatabase {
         return loginHistories;
     }
 
+    private static final String queryDeleteLastRecords = "delete from loginhistory order by (select id from loginclient where idc = ?) desc limit 3";
+
+    public void deleteThreeLastRecords(int idClient){
+        Connection con = getConnection();
+        System.out.println("aaaachhhh");
+        try {
+            PreparedStatement stmnt = con.prepareStatement(queryDeleteLastRecords);
+            stmnt.setInt(1,idClient);
+            stmnt.executeUpdate();
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

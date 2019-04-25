@@ -379,11 +379,12 @@ public class mysqlDatabase {
         return logins;
     }
 
+    //posledne tri zaznamy
     private static final String queryLastrecords = "select * from loginhistory where idl = (select id from loginclient where idc = ?)order by UNIX_TIMESTAMP(logDate) desc limit 3";
 
     public List<LoginHistory> getThreeLastRecords(int idClient){
         Connection con = getConnection();
-        System.out.println("aaaachhhh");
+        System.out.println("vytahujem posledne tri zaznamy");
         ResultSet res;
         List<LoginHistory> loginHistories = new ArrayList<>();
         try {
@@ -393,7 +394,7 @@ public class mysqlDatabase {
             while (res.next()){
                 int id = res.getInt("id");
                 int idl = res.getInt("idl");
-                boolean success = res.getBoolean("success");
+                String success = res.getString("success");
                 Date dateLog = res.getDate("logDate");
                 LoginHistory record = new LoginHistory(id, idl,success,dateLog);
                 loginHistories.add(record);
@@ -407,11 +408,13 @@ public class mysqlDatabase {
         return loginHistories;
     }
 
-    private static final String queryBlockByEmp = "insert into loginhistory(idl) values (?)";
+
+    //zablokovanie zamestnamcom
+    private static final String queryBlockByEmp = "insert into loginhistory(idl) values (select id from loginclient where idc = ?)";
     //idl poriesit
     public void blockByEmp(int idClient){
         Connection con = getConnection();
-        System.out.println("aaaachhhh");
+        System.out.println("blokujem IB ako bankar");
         try {
             PreparedStatement stmnt = con.prepareStatement(queryBlockByEmp);
             stmnt.setInt(1,idClient);
@@ -421,11 +424,12 @@ public class mysqlDatabase {
         }
     }
 
+    //posledny zaznam
     private static final String queryLastrecord = "select * from loginhistory where idl = (select id from loginclient where idc = ?)order by UNIX_TIMESTAMP(logDate) desc limit 1";
 
     public void isIBblock(int Client){
         Connection con = getConnection();
-        System.out.println("jaaaaj");
+        System.out.println("aky je posledny zaznam");
         String isSuccess;
         try {
             PreparedStatement statement = con.prepareStatement(queryLastrecord);
@@ -436,6 +440,21 @@ public class mysqlDatabase {
 
             System.out.println(isSuccess);
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //odblokovanie zamestnancom
+    private static final String queryUnblockByEmp = "insert into loginhistory(idl,success) values((select id from loginclient where idc = ?),true)";
+
+    public void unblockByEmp(int clientID){
+        Connection conn = getConnection();
+        System.out.println("odblokuvavam IB");
+        try{
+            PreparedStatement statement = conn.prepareStatement(queryUnblockByEmp);
+            statement.setInt(1,clientID);
+            conn.close();
+        }  catch (SQLException e) {
             e.printStackTrace();
         }
     }

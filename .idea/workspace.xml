@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/LoginHistory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/LoginHistory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/database/mysqlDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/mysqlDatabase.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/windows/Log.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/windows/Log.java" afterDir="false" />
     </list>
@@ -63,22 +64,22 @@
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/windows/log.fxml">
+          <provider editor-type-id="JavaFX-Scene-Builder" />
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1802">
               <caret line="106" column="128" selection-start-line="106" selection-start-column="128" selection-end-line="106" selection-end-column="128" />
             </state>
           </provider>
-          <provider editor-type-id="JavaFX-Scene-Builder" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/windows/Log.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="375" column="86" selection-start-line="375" selection-start-column="86" selection-end-line="375" selection-end-column="86" />
+            <state relative-caret-position="69">
+              <caret line="365" selection-start-line="365" selection-end-line="365" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <marker date="1556188398068" expanded="true" signature="10942:11275" ph="..." />
+                <marker date="1556205880348" expanded="true" signature="10957:11362" ph="..." />
               </folding>
             </state>
           </provider>
@@ -96,8 +97,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/client/LoginHistory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="21" selection-start-line="2" selection-start-column="21" selection-end-line="2" selection-end-column="21" />
+            <state relative-caret-position="289">
+              <caret line="19" column="5" lean-forward="true" selection-start-line="19" selection-start-column="5" selection-end-line="19" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -117,8 +118,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/database/mysqlDatabase.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="612">
-              <caret line="431" column="40" lean-forward="true" selection-start-line="431" selection-start-column="40" selection-end-line="431" selection-end-column="40" />
+            <state relative-caret-position="201">
+              <caret line="394" column="42" lean-forward="true" selection-start-line="394" selection-start-column="42" selection-end-line="394" selection-end-column="42" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -172,10 +173,10 @@
         <option value="$PROJECT_DIR$/src/client/Client.java" />
         <option value="$PROJECT_DIR$/src/windows/newClient.java" />
         <option value="$PROJECT_DIR$/src/client/LoginClient.java" />
-        <option value="$PROJECT_DIR$/src/client/LoginHistory.java" />
         <option value="$PROJECT_DIR$/src/windows/log.fxml" />
-        <option value="$PROJECT_DIR$/src/database/mysqlDatabase.java" />
+        <option value="$PROJECT_DIR$/src/client/LoginHistory.java" />
         <option value="$PROJECT_DIR$/src/windows/Log.java" />
+        <option value="$PROJECT_DIR$/src/database/mysqlDatabase.java" />
       </list>
     </option>
   </component>
@@ -200,6 +201,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -235,7 +237,6 @@
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -247,7 +248,7 @@
     <property name="MemberChooser.sorted" value="false" />
     <property name="OverrideImplement.combined" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1556188398119" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1556188590742" />
     <property name="dynamic.classpath" value="false" />
     <property name="last_opened_file_path" value="$USER_HOME$/Downloads/mysql-connector-java-5.1.47/mysql-connector-java-5.1.47/mysql-connector-java-5.1.47-bin.jar!/" />
     <property name="project.structure.last.edited" value="Libraries" />
@@ -368,9 +369,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.109897174" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.11118252" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" />
       <window_info id="Designer" order="3" />
@@ -379,7 +379,7 @@
       <window_info id="Capture Tool" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.46971735" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.08882907" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.410498" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.04037685" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -391,7 +391,7 @@
       <window_info anchor="bottom" id="Profiler" order="11" />
       <window_info anchor="bottom" id="Event Log" order="12" weight="0.32974428" />
       <window_info anchor="bottom" id="Messages" order="13" weight="0.32974428" />
-      <window_info anchor="bottom" id="Terminal" order="14" weight="0.3243607" />
+      <window_info anchor="bottom" id="Terminal" order="14" weight="0.082099594" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -479,12 +479,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/windows/sample.fxml">
+      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
       <provider editor-type-id="text-editor">
         <state relative-caret-position="391">
           <caret line="23" column="19" selection-start-line="23" selection-start-column="19" selection-end-line="23" selection-end-column="19" />
         </state>
       </provider>
-      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/windows/newAccount.java" />
     <entry file="file://$PROJECT_DIR$/src/windows/newAccount.fxml" />
@@ -560,20 +560,27 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/windows/newClient.fxml">
+      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
       <provider editor-type-id="text-editor">
         <state relative-caret-position="357">
           <caret line="21" column="100" selection-start-line="21" selection-start-column="100" selection-end-line="21" selection-end-column="100" />
         </state>
       </provider>
-      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/windows/log.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1802">
           <caret line="106" column="128" selection-start-line="106" selection-start-column="128" selection-end-line="106" selection-end-column="128" />
         </state>
       </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/client/LoginClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="13" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/windows/newClient.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -587,22 +594,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/client/LoginHistory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="21" selection-start-line="2" selection-start-column="21" selection-end-line="2" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/client/LoginClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="13" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
+        <state relative-caret-position="289">
+          <caret line="19" column="5" lean-forward="true" selection-start-line="19" selection-start-column="5" selection-end-line="19" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/database/mysqlDatabase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="431" column="40" lean-forward="true" selection-start-line="431" selection-start-column="40" selection-end-line="431" selection-end-column="40" />
+        <state relative-caret-position="201">
+          <caret line="394" column="42" lean-forward="true" selection-start-line="394" selection-start-column="42" selection-end-line="394" selection-end-column="42" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -611,11 +611,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/windows/Log.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="375" column="86" selection-start-line="375" selection-start-column="86" selection-end-line="375" selection-end-column="86" />
+        <state relative-caret-position="69">
+          <caret line="365" selection-start-line="365" selection-end-line="365" />
           <folding>
             <element signature="imports" expanded="true" />
-            <marker date="1556188398068" expanded="true" signature="10942:11275" ph="..." />
+            <marker date="1556205880348" expanded="true" signature="10957:11362" ph="..." />
           </folding>
         </state>
       </provider>

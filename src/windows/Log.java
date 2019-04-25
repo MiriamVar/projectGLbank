@@ -363,7 +363,7 @@ public class Log<client> {
         int id = actual_clientik.getId();
         List<LoginHistory> threeLastRecords  =database.getThreeLastRecords(id);
         for(int i =0; i<threeLastRecords.size();i++){
-         if (!threeLastRecords.get(i).isSuccess()){
+         if (threeLastRecords.get(i).isSuccess().equals("false")){
              checkBoxBlock.setSelected(true);
          }
         }
@@ -372,11 +372,12 @@ public class Log<client> {
     public void blockByEmp(ActionEvent actionEvent) {
         int id = actual_clientik.getId();
         if(!checkBoxBlock.isSelected()){
-            database.blockByEmp(id);
+            database.unblockByEmp(id);
             //ak nie je zaskrtnute tlacitko .. tak ho zaskrtne bankar a zablokuje ucet .. vlozi null
         }
         else{
-            database.isIBblock(id);
+            database.blockByEmp(id);
+            //odstrtne tlacitko a da zaznam do tabulky
         }
     }
 

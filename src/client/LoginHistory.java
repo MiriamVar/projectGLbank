@@ -5,10 +5,10 @@ import java.sql.Date;
 public class LoginHistory {
     private int id;
     private int idl;
-    private boolean success;
+    private String success;
     private Date logDate;
 
-    public LoginHistory(int id, int idl, boolean success, Date logDate) {
+    public LoginHistory(int id, int idl, String success, Date logDate) {
         this.id = id;
         this.idl = idl;
         this.success = success;
@@ -23,7 +23,7 @@ public class LoginHistory {
         return idl;
     }
 
-    public boolean isSuccess() {
+    public String isSuccess() {
         return success;
     }
 

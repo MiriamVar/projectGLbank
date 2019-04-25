@@ -379,7 +379,7 @@ public class mysqlDatabase {
         return logins;
     }
 
-    private static final String queryLastrecords = "select * from loginhistory order by (select id from loginclient where idc = ?) desc limit 3";
+    private static final String queryLastrecords = "select * from loginhistory where idl = (select id from loginclient where idc = ?)order by UNIX_TIMESTAMP(logDate) desc limit 3";
 
     public List<LoginHistory> getThreeLastRecords(int idClient){
         Connection con = getConnection();
@@ -407,19 +407,41 @@ public class mysqlDatabase {
         return loginHistories;
     }
 
-    private static final String queryDeleteLastRecords = "delete from loginhistory order by (select id from loginclient where idc = ?) desc limit 3";
-
-    public void deleteThreeLastRecords(int idClient){
+    private static final String queryBlockByEmp = "insert into loginhistory(idl) values (?)";
+    //idl poriesit
+    public void blockByEmp(int idClient){
         Connection con = getConnection();
         System.out.println("aaaachhhh");
         try {
-            PreparedStatement stmnt = con.prepareStatement(queryDeleteLastRecords);
+            PreparedStatement stmnt = con.prepareStatement(queryBlockByEmp);
             stmnt.setInt(1,idClient);
-            stmnt.executeUpdate();
             con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+    private static final String queryLastrecord = "select * from loginhistory where idl = (select id from loginclient where idc = ?)order by UNIX_TIMESTAMP(logDate) desc limit 1";
+
+    public void isIBblock(int Client){
+        Connection con = getConnection();
+        System.out.println("jaaaaj");
+        String isSuccess;
+        try {
+            PreparedStatement statement = con.prepareStatement(queryLastrecord);
+            statement.setInt(1, Client);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            isSuccess = resultSet.getString("success");
+
+            System.out.println(isSuccess);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
 
 }

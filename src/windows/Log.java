@@ -358,21 +358,26 @@ public class Log<client> {
         database.resetIBPass(id);
     }
 
-
+    // zaskrtne tlacitko block a zablokuje si client sam ucet
     public void setBlockIB() {
         int id = actual_clientik.getId();
         List<LoginHistory> threeLastRecords  =database.getThreeLastRecords(id);
         for(int i =0; i<threeLastRecords.size();i++){
          if (!threeLastRecords.get(i).isSuccess()){
              checkBoxBlock.setSelected(true);
-             database.deleteThreeLastRecords(id);
          }
         }
     }
 
-//    public void blockByEmp(ActionEvent actionEvent) {
-//        if(checkBoxBlock.setSelected(true)){
-//
-//        }
-//    }
+    public void blockByEmp(ActionEvent actionEvent) {
+        int id = actual_clientik.getId();
+        if(!checkBoxBlock.isSelected()){
+            database.blockByEmp(id);
+            //ak nie je zaskrtnute tlacitko .. tak ho zaskrtne bankar a zablokuje ucet .. vlozi null
+        }
+        else{
+            database.isIBblock(id);
+        }
+    }
+
 }

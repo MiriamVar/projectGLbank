@@ -410,14 +410,16 @@ public class mysqlDatabase {
 
 
     //zablokovanie zamestnamcom
-    private static final String queryBlockByEmp = "insert into loginhistory(idl) values (select id from loginclient where idc = ?)";
+    private static final String queryBlockByEmp = "insert into loginhistory(idl) select id from loginclient where idc = ?";
     //idl poriesit
     public void blockByEmp(int idClient){
         Connection con = getConnection();
         System.out.println("blokujem IB ako bankar");
         try {
-            PreparedStatement stmnt = con.prepareStatement(queryBlockByEmp);
-            stmnt.setInt(1,idClient);
+            PreparedStatement statement = con.prepareStatement(queryBlockByEmp);
+            statement.setInt(1, idClient);
+            System.out.println(idClient);
+            statement.execute();
             con.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -427,7 +429,7 @@ public class mysqlDatabase {
     //posledny zaznam
     private static final String queryLastrecord = "select * from loginhistory where idl = (select id from loginclient where idc = ?)order by UNIX_TIMESTAMP(logDate) desc limit 1";
 
-    public void isIBblock(int Client){
+    public boolean isIBblock(int Client){
         Connection con = getConnection();
         System.out.println("aky je posledny zaznam");
         String isSuccess;
@@ -437,15 +439,22 @@ public class mysqlDatabase {
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
             isSuccess = resultSet.getString("success");
-
             System.out.println(isSuccess);
+            if(isSuccess == "false"){
+                return false;
+            } else if(isSuccess == "null"){
+                return false;
+            }else {
+                return true;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     //odblokovanie zamestnancom
-    private static final String queryUnblockByEmp = "insert into loginhistory(idl,success) values((select id from loginclient where idc = ?),true)";
+    private static final String queryUnblockByEmp = "insert into loginhistory(idl,success) values((select id from loginclient where idc = ?),1)";
 
     public void unblockByEmp(int clientID){
         Connection conn = getConnection();
@@ -453,6 +462,7 @@ public class mysqlDatabase {
         try{
             PreparedStatement statement = conn.prepareStatement(queryUnblockByEmp);
             statement.setInt(1,clientID);
+            statement.execute();
             conn.close();
         }  catch (SQLException e) {
             e.printStackTrace();

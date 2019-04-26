@@ -367,6 +367,11 @@ public class Log<client> {
              checkBoxBlock.setSelected(true);
          }
         }
+         if (!database.isIBblock(id)){
+            checkBoxBlock.setSelected(true);
+        }else{
+            checkBoxBlock.setSelected(false);
+        }
     }
 
     public void blockByEmp(ActionEvent actionEvent) {

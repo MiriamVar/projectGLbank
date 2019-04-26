@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -58,6 +59,8 @@ public class Log<client> {
     public Button btnNewCard;
     public Label lblMessNewCArd;
     public Label lblMessChangePin;
+    public CheckBox checkBoxBlockCard;
+    public ComboBox comBoxTransAccounts;
 
     private mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
     private List<Client> all_clients;
@@ -316,6 +319,10 @@ public class Log<client> {
         //urobit
     }
 
+    public void blockingCard(){
+
+    }
+
     public static String generatingLogin(){
 
         Random random = new Random();
@@ -361,13 +368,27 @@ public class Log<client> {
     // zaskrtne tlacitko block a zablokuje si client sam ucet
     public void setBlockIB() {
         int id = actual_clientik.getId();
-        List<LoginHistory> threeLastRecords  =database.getThreeLastRecords(id);
+        List<LoginHistory> threeLastRecords =database.getThreeLastRecords(id);
+        int blocks = 0;
         for(int i =0; i<threeLastRecords.size();i++){
-         if (threeLastRecords.get(i).isSuccess().equals("false")){
-             checkBoxBlock.setSelected(true);
-         }
+            if ( i == 0 && threeLastRecords.get(i).isSuccess() == null){
+                checkBoxBlock.setSelected(true);
+            } else if ( i == 0 && threeLastRecords.get(i).isSuccess().equals("1")){
+                checkBoxBlock.setSelected(false);
+            } else if (threeLastRecords.get(i).isSuccess() == null){
+                //NIC lebo by bol bloknuty a nevedel nic robit bez odblokovania takze logicky uz medzi tymi troma vysledkami neboli 3 nespravne prihlasenia
+            } else if (threeLastRecords.get(i).isSuccess().equals("1")) {
+                // NIC
+            } else {
+                blocks++;
+            }
         }
-         if (!database.isIBblock(id)){
+        if (blocks == 3){
+            checkBoxBlock.setSelected(true);
+        } else {
+            checkBoxBlock.setSelected(false);
+        }
+        if (!database.isIBblock(id)){
             checkBoxBlock.setSelected(true);
         }else{
             checkBoxBlock.setSelected(false);
@@ -378,12 +399,25 @@ public class Log<client> {
         int id = actual_clientik.getId();
         if(!checkBoxBlock.isSelected()){
             database.unblockByEmp(id);
-            //ak nie je zaskrtnute tlacitko .. tak ho zaskrtne bankar a zablokuje ucet .. vlozi null
         }
         else{
             database.blockByEmp(id);
-            //odstrtne tlacitko a da zaznam do tabulky
         }
     }
 
+    public void selectAccountTran(ActionEvent actionEvent) {
+        System.out.println("tu su accoutny");
+        if (actual_clientik == null || actual_clientik.countOfAccounts() == 0){
+            System.out.println("select account - osetrenie" + actual_clientik);
+            return;
+        }
+        int selected  = comBoxTransAccounts.getSelectionModel().getSelectedIndex();
+        if (selected<0){
+            return;
+        }
+        actual_accountik = actual_clientik.getAccount(selected);
+        showAccountsInfo();
+        actual_accountik.loadCards();
+        loadCards();
+    }
 }

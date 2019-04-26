@@ -395,6 +395,7 @@ public class mysqlDatabase {
                 int id = res.getInt("id");
                 int idl = res.getInt("idl");
                 String success = res.getString("success");
+                System.out.println("success je "+success);
                 Date dateLog = res.getDate("logDate");
                 LoginHistory record = new LoginHistory(id, idl,success,dateLog);
                 loginHistories.add(record);
@@ -426,6 +427,7 @@ public class mysqlDatabase {
         }
     }
 
+
     //posledny zaznam
     private static final String queryLastrecord = "select * from loginhistory where idl = (select id from loginclient where idc = ?)order by UNIX_TIMESTAMP(logDate) desc limit 1";
 
@@ -437,20 +439,22 @@ public class mysqlDatabase {
             PreparedStatement statement = con.prepareStatement(queryLastrecord);
             statement.setInt(1, Client);
             ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            isSuccess = resultSet.getString("success");
-            System.out.println(isSuccess);
-            if(isSuccess == "false"){
-                return false;
-            } else if(isSuccess == "null"){
-                return false;
-            }else {
-                return true;
+            while(resultSet.next()) {
+                isSuccess = resultSet.getString("success");
+                System.out.println(isSuccess);
+                if (isSuccess == null) {
+                    return false;
+                } else {
+                    System.out.println(isSuccess);
+                    return true;
+                }
             }
+            System.out.println("neni ziaden zazanm o prihlaseni");
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return true;
     }
 
     //odblokovanie zamestnancom
@@ -468,6 +472,10 @@ public class mysqlDatabase {
             e.printStackTrace();
         }
     }
+
+    private static final String queryBlockCard = "select * from card where ida = (select id from account where idc = ?)";
+
+
 
 
 

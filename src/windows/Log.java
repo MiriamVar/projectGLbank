@@ -315,12 +315,26 @@ public class Log<client> {
         loadCards();
     }
 
-    public void changePin(){
-        //urobit
+    public void changePIN(){
+        String newPIN = Account.generatingPIN();
+        int id = actual_card.getId();
+        database.changePin(newPIN,id);
+        lblPin.setText(newPIN);
     }
 
-    public void blockingCard(){
 
+    public void blockingCard(){
+        boolean block = actual_card.isActive();
+        int id = actual_card.getId();
+        if(block){
+            database.blockCard(id); // zablokuje kartu
+            checkBoxBlockCard.setSelected(true);
+            lblActive.setText("false");// zaskrtne
+        }else{
+            database.unBlockCard(id);
+            checkBoxBlockCard.setSelected(false);
+            lblActive.setText("true");
+        }
     }
 
     public static String generatingLogin(){

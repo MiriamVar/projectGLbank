@@ -45,4 +45,8 @@ public class Card {
     public int getExpireY() {
         return expireY;
     }
+
+    public void setPin(String pin) {
+        this.pin = pin;
+    }
 }

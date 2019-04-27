@@ -473,7 +473,51 @@ public class mysqlDatabase {
         }
     }
 
-    private static final String queryBlockCard = "select * from card where ida = (select id from account where idc = ?)";
+    private static final String queryBlockingCard = "update card set active = ? where id = ?";
+
+    public void blockCard(int idCard){
+        Connection con = getConnection();
+        System.out.println("blokujem kartu");
+        try {
+            PreparedStatement statement = con.prepareStatement(queryBlockingCard);
+            statement.setBoolean(1,false);
+            statement.setInt(2,idCard);
+            statement.execute();
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void unBlockCard(int idCard){
+        Connection con = getConnection();
+        System.out.println("blokujem kartu");
+        try {
+            PreparedStatement statement = con.prepareStatement(queryBlockingCard);
+            statement.setBoolean(1,true);
+            statement.setInt(2,idCard);
+            statement.execute();
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static final String queryChangingPIN = "update card set pin = ? where id = ?";
+
+    public void changePin(String pin,int idCard){
+        Connection con = getConnection();
+        System.out.println("menim pin");
+        try {
+            PreparedStatement statement = con.prepareStatement(queryChangingPIN);
+            statement.setString(1,pin);
+            statement.setInt(2,idCard);
+            statement.execute();
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 

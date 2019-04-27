@@ -82,7 +82,7 @@ public class Account {
     }
 
 
-    private String generatingPIN(){
+    public static String generatingPIN(){
         Random random = new Random();
         String pinNumber ="";
         for (int i=0;i<4;i++){

@@ -11,10 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -61,6 +58,12 @@ public class Log<client> {
     public Label lblMessChangePin;
     public CheckBox checkBoxBlockCard;
     public ComboBox comBoxTransAccounts;
+    public TextField textFieldWithdraw;
+    public TextField textFieldDeposit;
+    public Button btnWithdraw;
+    public Button btnDeposit;
+    public Label lblMessWithdraw;
+    public Label lblMessDeposit;
 
     private mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
     private List<Client> all_clients;
@@ -328,10 +331,12 @@ public class Log<client> {
         int id = actual_card.getId();
         if(block){
             database.blockCard(id); // zablokuje kartu
+            actual_card.setActive(false);
             checkBoxBlockCard.setSelected(true);
             lblActive.setText("false");// zaskrtne
         }else{
             database.unBlockCard(id);
+            actual_card.setActive(true);
             checkBoxBlockCard.setSelected(false);
             lblActive.setText("true");
         }
@@ -434,4 +439,28 @@ public class Log<client> {
         actual_accountik.loadCards();
         loadCards();
     }
+
+    public void withdrawMoney(ActionEvent actionEvent) {
+        double number = Double.parseDouble(textFieldWithdraw.getText());
+        String accNum = actual_accountik.getAccountNumber();
+        double actualAmountOfMoney = actual_accountik.getAmount();
+
+        if((actualAmountOfMoney-number) < 0){
+            lblMessWithdraw.setText("You don't have enough money.");
+        }else{
+            database.sendingMoney(accNum,number);
+            textFieldWithdraw.setText("");
+            lblMessWithdraw.setText("Money was sent.");
+        }
+    }
+
+    public void depositMoney(ActionEvent actionEvent) {
+        double number = Double.parseDouble(textFieldDeposit.getText());
+        String accNum = actual_accountik.getAccountNumber();
+        database.gettingMoney(accNum,number);
+        textFieldDeposit.setText("");
+        lblMessDeposit.setText("Money was get.");
+    }
+
+
 }

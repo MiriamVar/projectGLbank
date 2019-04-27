@@ -519,10 +519,55 @@ public class mysqlDatabase {
         }
     }
 
+    private static final String queryWithdrawMoney = "update account set amount = amount + ? where accnum = ?";
+
+    public void sendingMoney(String acountNum,double money){
+        Connection con = getConnection();
+        System.out.println("posielam peniaze");
+        try {
+            PreparedStatement statement = con.prepareStatement(queryWithdrawMoney);
+            statement.setDouble(1,money);
+            statement.setString(2,acountNum);
+            statement.execute();
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 
+    private static final String queryDepositMoney = "update account set amount = amount - ? where accnum = ?";
 
+    public void gettingMoney(String acountNum,double money){
+        Connection con = getConnection();
+        System.out.println("ziskavam peniaze");
+        try {
+            PreparedStatement statement = con.prepareStatement(queryDepositMoney);
+            statement.setDouble(1,money);
+            statement.setString(2,acountNum);
+            statement.execute();
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
+    private static final String queryNewTransaction = "insert into transaction(idacc,idEmployee,recAccount,transAmount) values(?,?,?,?)";
 
+    public void makeingTransaction(int ida,int ide, String recAccNum, double money){
+        Connection conn = getConnection();
+        System.out.println("vytvaram novu transakciu");
+        try{
+            PreparedStatement statement = conn.prepareStatement(queryNewTransaction);
+            statement.setInt(1,ida);
+            statement.setInt(2,ide);
+            statement.setString(3,recAccNum);
+            statement.setDouble(4,money);
+            statement.execute();
+            conn.close();
+        }  catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

@@ -20,18 +20,18 @@
       <RowConstraints />
    </rowConstraints>
    <children>
-      <Pane prefHeight="564.0" prefWidth="704.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <Pane prefHeight="481.0" prefWidth="537.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <Button fx:id="enterBtn" layoutX="330.0" layoutY="360.0" mnemonicParsing="false" onAction="#logIn" text="Enter" />
-            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="252.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true">
+            <Button fx:id="enterBtn" layoutX="230.0" layoutY="355.0" mnemonicParsing="false" onAction="#logIn" text="Enter" />
+            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="156.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/banking.jpg" />
                </image>
             </ImageView>
-            <Label layoutX="252.0" layoutY="227.0" text="Login" />
-            <Label layoutX="242.0" layoutY="291.0" text="Password" />
-            <TextField fx:id="loginInput" layoutX="302.0" layoutY="223.0" text="mimik" />
-            <TextField fx:id="passInput" layoutX="302.0" layoutY="287.0" text="qwerty" />
+            <Label layoutX="175.0" layoutY="227.0" text="Login" />
+            <Label layoutX="168.0" layoutY="291.0" text="Password" />
+            <TextField fx:id="loginInput" layoutX="226.0" layoutY="223.0" prefHeight="25.0" prefWidth="123.0" text="mimik" />
+            <TextField fx:id="passInput" layoutX="228.0" layoutY="287.0" prefHeight="25.0" prefWidth="123.0" text="qwerty" />
             <Label fx:id="wrongName" layoutX="326.0" layoutY="258.0" text="Wrong user name" textFill="#fc0909" visible="false" />
             <Label fx:id="wrongPassword" layoutX="331.0" layoutY="324.0" text="Wrong password" textFill="#f00000" visible="false" />
          </children>

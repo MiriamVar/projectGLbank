@@ -95,7 +95,7 @@
                         <Label fx:id="lblAccNum" layoutX="190.0" layoutY="182.0" />
                         <Label fx:id="lblMessNewCArd" layoutX="191.0" layoutY="259.0" />
                         <Label fx:id="lblMessChangePin" layoutX="492.0" layoutY="259.0" />
-                        <CheckBox fx:id="checkBoxBlockCard" layoutX="225.0" layoutY="259.0" mnemonicParsing="false" onAction="#blockingCard" text="Block" />
+                        <CheckBox fx:id="checkBoxBlockCard" layoutX="312.0" layoutY="259.0" mnemonicParsing="false" onAction="#blockingCard" text="Block" />
                      </children></AnchorPane>
                </content>
             </Tab>
@@ -117,13 +117,15 @@
                         <Label layoutX="153.0" layoutY="42.0" text="Accounts" />
                         <Label layoutX="138.0" layoutY="97.0" text="Vydaj" />
                         <Label layoutX="422.0" layoutY="93.0" prefHeight="24.0" prefWidth="30.0" text="Vklad" />
-                        <TextField fx:id="textFieldWithdraw" layoutX="100.0" layoutY="131.0" onAction="#withdrawMoney" prefHeight="25.0" prefWidth="107.0" />
-                        <TextField fx:id="textFieldDeposit" layoutX="390.0" layoutY="131.0" onAction="#depositMoney" prefHeight="25.0" prefWidth="107.0" />
+                        <TextField fx:id="textFieldWithdraw" layoutX="100.0" layoutY="131.0" prefHeight="25.0" prefWidth="107.0" />
+                        <TextField fx:id="textFieldDeposit" layoutX="390.0" layoutY="131.0" prefHeight="25.0" prefWidth="107.0" />
                         <Label layoutX="33.0" layoutY="135.0" text="Amount" />
                         <Label layoutX="328.0" layoutY="135.0" text="Amount" />
-                        <Button fx:id="btnWithdraw" layoutX="120.0" layoutY="173.0" mnemonicParsing="false" text="Withdraw" />
-                        <Button fx:id="btnDeposit" layoutX="409.0" layoutY="173.0" mnemonicParsing="false" text="Deposit" />
+                        <Button fx:id="btnWithdraw" layoutX="120.0" layoutY="173.0" mnemonicParsing="false" onAction="#withdrawMoney" text="Withdraw" />
+                        <Button fx:id="btnDeposit" layoutX="409.0" layoutY="173.0" mnemonicParsing="false" onAction="#depositMoney" text="Deposit" />
                         <ComboBox fx:id="comBoxTransAccounts" layoutX="225.0" layoutY="38.0" onAction="#selectAccountTran" prefWidth="150.0" />
+                        <Label fx:id="lblMessWithdraw" layoutX="98.0" layoutY="217.0" />
+                        <Label fx:id="lblMessDeposit" layoutX="399.0" layoutY="217.0" />
                      </children></AnchorPane>
                </content>
             </Tab>

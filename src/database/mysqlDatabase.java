@@ -491,7 +491,7 @@ public class mysqlDatabase {
 
     public void unBlockCard(int idCard){
         Connection con = getConnection();
-        System.out.println("blokujem kartu");
+        System.out.println("odblokujem kartu");
         try {
             PreparedStatement statement = con.prepareStatement(queryBlockingCard);
             statement.setBoolean(1,true);
@@ -519,7 +519,7 @@ public class mysqlDatabase {
         }
     }
 
-    private static final String queryWithdrawMoney = "update account set amount = amount + ? where accnum = ?";
+    private static final String queryWithdrawMoney = "update account set amount = amount - ? where accnum = ?";
 
     public void sendingMoney(String acountNum,double money){
         Connection con = getConnection();
@@ -536,7 +536,7 @@ public class mysqlDatabase {
     }
 
 
-    private static final String queryDepositMoney = "update account set amount = amount - ? where accnum = ?";
+    private static final String queryDepositMoney = "update account set amount = amount + ? where accnum = ?";
 
     public void gettingMoney(String acountNum,double money){
         Connection con = getConnection();

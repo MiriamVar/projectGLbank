@@ -70,6 +70,7 @@ public class Log<client> {
     private Client actual_clientik;
     private Account actual_accountik;
     private Card actual_card;
+    private Employee emp;
 
 
     public Log(){
@@ -141,6 +142,7 @@ public class Log<client> {
      void showData(Employee emp) {
         lblEmpName.setText(emp.getFname());
         lblEmpSurname.setText(emp.getLname());
+        this.emp= emp;
     }
 
     public void logOut(ActionEvent actionEvent) throws IOException {
@@ -161,10 +163,6 @@ public class Log<client> {
 
     //vytvaranie noveho clienta
     public void createNewClient(ActionEvent actionEvent) throws IOException {
-        Node node = (Node) actionEvent.getSource();
-        dialogStage = (Stage) node.getScene().getWindow();
-        dialogStage.close();
-
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("../windows/newClient.fxml"));
         Parent accountView = fxmlLoader.load();
@@ -198,6 +196,7 @@ public class Log<client> {
             list2.add(swap.getAccountNumber());
         }
         comBoxClientAccounts.setItems(list2);
+        comBoxTransAccounts.setItems(list2);
     }
 
     //vypise info o accounte
@@ -220,6 +219,7 @@ public class Log<client> {
         if (selected<0){
             lblAccNumber.setText("");
             lblMoney.setText("");
+//            selected = 0;
             return;
         }
         actual_accountik = actual_clientik.getAccount(selected);
@@ -264,6 +264,7 @@ public class Log<client> {
     //CARD
     public void loadCards() {
         if(actual_accountik ==null || actual_accountik.getCountOfCards() == 0){
+            clearCardInfo();
             return;
         }
         updateCards();
@@ -287,6 +288,16 @@ public class Log<client> {
         lblAccNum.setText(String.valueOf(this.actual_card.getIda()));
     }
 
+    private void clearCardInfo(){
+        ObservableList<String> list3 = FXCollections.observableArrayList();
+        comBoxClientCards.setItems(list3);
+        checkBoxBlockCard.setSelected(false);
+        lblPin.setText("");
+        lblActive.setText("");
+        lblAccNum.setText("");
+        lblExpireDate.setText("");
+    }
+
     public void selectCard(){
         lblPin.setText("");
         lblActive.setText("");
@@ -298,8 +309,10 @@ public class Log<client> {
         }
         int selected = comBoxClientCards.getSelectionModel().getSelectedIndex();
         if (selected<0){
-            lblAccNumber.setText("");
-            lblMoney.setText("");
+            lblPin.setText("");
+            lblActive.setText("");
+            lblAccNum.setText("");
+            lblExpireDate.setText("");
             return;
         }
         actual_card = actual_accountik.getCard(selected);
@@ -444,11 +457,13 @@ public class Log<client> {
         double number = Double.parseDouble(textFieldWithdraw.getText());
         String accNum = actual_accountik.getAccountNumber();
         double actualAmountOfMoney = actual_accountik.getAmount();
+        int id = actual_accountik.getId();
 
         if((actualAmountOfMoney-number) < 0){
             lblMessWithdraw.setText("You don't have enough money.");
         }else{
             database.sendingMoney(accNum,number);
+            database.makeingTransaction(id, emp.getId(), accNum,number);
             textFieldWithdraw.setText("");
             lblMessWithdraw.setText("Money was sent.");
         }
@@ -457,7 +472,9 @@ public class Log<client> {
     public void depositMoney(ActionEvent actionEvent) {
         double number = Double.parseDouble(textFieldDeposit.getText());
         String accNum = actual_accountik.getAccountNumber();
+        int id = actual_accountik.getId();
         database.gettingMoney(accNum,number);
+        database.makeingTransaction(id, emp.getId(), accNum,number);
         textFieldDeposit.setText("");
         lblMessDeposit.setText("Money was get.");
     }

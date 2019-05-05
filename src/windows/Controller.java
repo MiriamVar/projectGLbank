@@ -60,7 +60,6 @@ public class Controller {
 
         } else {
             //este dokoncit
-            wrongName.setVisible(true);
             wrongPassword.setVisible(true);
         }
 

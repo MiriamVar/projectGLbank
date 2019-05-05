@@ -28,8 +28,8 @@
          </image>
       </ImageView>
       <Separator layoutY="70.0" prefHeight="2.0" prefWidth="600.0" />
-      <ComboBox fx:id="comBoxClientsNames" layoutX="158.0" layoutY="91.0" onAction="#selectClient" prefWidth="150.0" />
-      <Button fx:id="btnAddNewClient" layoutX="355.0" layoutY="91.0" mnemonicParsing="false" onAction="#createNewClient" text="New Client" />
+      <ComboBox fx:id="comBoxClientsNames" layoutX="98.0" layoutY="91.0" onAction="#selectClient" prefHeight="25.0" prefWidth="210.0" />
+      <Button fx:id="btnAddNewClient" layoutX="355.0" layoutY="91.0" mnemonicParsing="false" onAction="#createNewClient" style="-fx-background-color: #ff7f35;" text="New Client" />
       <TabPane layoutY="129.0" prefHeight="329.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Client">
@@ -71,7 +71,7 @@
                               <Font name="Calibri Bold" size="21.0" />
                            </font>
                         </Label>
-                        <Button fx:id="btnNewAccount" layoutX="20.0" layoutY="256.0" mnemonicParsing="false" onAction="#createNewAccount" text="Create new Account" />
+                        <Button fx:id="btnNewAccount" layoutX="20.0" layoutY="256.0" mnemonicParsing="false" onAction="#createNewAccount" style="-fx-background-color: #ff7f35;" text="Create new Account" />
                         <Label fx:id="lblAnyAccount" layoutX="411.0" layoutY="27.0" />
                         <Label fx:id="lblAccountCreated" layoutX="185.0" layoutY="260.0" />
                      </children></AnchorPane>
@@ -81,10 +81,10 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ComboBox fx:id="comBoxClientCards" layoutX="225.0" layoutY="32.0" onAction="#selectCard" prefWidth="150.0" />
-                        <Label layoutX="125.0" layoutY="36.0" text="Cards of client" />
-                        <Button fx:id="btnNewCard" layoutX="68.0" layoutY="255.0" mnemonicParsing="false" onAction="#createNewCard" text="Add new Card" />
-                        <Button layoutX="391.0" layoutY="255.0" mnemonicParsing="false" onAction="#changePIN" text="Change PIN" />
+                        <ComboBox fx:id="comBoxClientCards" layoutX="225.0" layoutY="51.0" onAction="#selectCard" prefWidth="150.0" />
+                        <Label layoutX="118.0" layoutY="55.0" text="Cards of account" />
+                        <Button fx:id="btnNewCard" layoutX="68.0" layoutY="255.0" mnemonicParsing="false" onAction="#createNewCard" style="-fx-background-color: #ff7f35;" text="Add new Card" />
+                        <Button layoutX="391.0" layoutY="255.0" mnemonicParsing="false" onAction="#changePIN" style="-fx-background-color: #ff7f35;" text="Change PIN" />
                         <Label layoutX="102.0" layoutY="86.0" text="pin:" />
                         <Label layoutX="96.0" layoutY="120.0" text="active:" />
                         <Label layoutX="74.0" layoutY="150.0" text="date of expire:" />
@@ -96,6 +96,8 @@
                         <Label fx:id="lblMessNewCArd" layoutX="191.0" layoutY="259.0" />
                         <Label fx:id="lblMessChangePin" layoutX="492.0" layoutY="259.0" />
                         <CheckBox fx:id="checkBoxBlockCard" layoutX="312.0" layoutY="259.0" mnemonicParsing="false" onAction="#blockingCard" text="Block" />
+                        <ComboBox fx:id="comBoxClientsAcc" layoutX="225.0" layoutY="14.0" onAction="#selectAccountOfClient" prefWidth="150.0" />
+                        <Label layoutX="118.0" layoutY="18.0" text="Account of client" />
                      </children></AnchorPane>
                </content>
             </Tab>
@@ -105,7 +107,7 @@
                      <children>
                         <Label layoutX="115.0" layoutY="62.0" text="login:" />
                         <Label fx:id="lblLogin" layoutX="175.0" layoutY="62.0" prefHeight="17.0" prefWidth="175.0" />
-                        <Button fx:id="btnResetPass" layoutX="178.0" layoutY="106.0" mnemonicParsing="false" onAction="#btnResetPass" text="Reset password" />
+                        <Button fx:id="btnResetPass" layoutX="178.0" layoutY="106.0" mnemonicParsing="false" onAction="#btnResetPass" style="-fx-background-color: #ff7f35;" text="Reset password" />
                         <CheckBox fx:id="checkBoxBlock" layoutX="191.0" layoutY="150.0" mnemonicParsing="false" onAction="#blockByEmp" text="Block" />
                      </children></AnchorPane>
                </content>
@@ -114,22 +116,29 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Label layoutX="153.0" layoutY="42.0" text="Accounts" />
+                        <Label layoutX="72.0" layoutY="42.0" text="Accounts" />
                         <Label layoutX="138.0" layoutY="97.0" text="Vydaj" />
                         <Label layoutX="422.0" layoutY="93.0" prefHeight="24.0" prefWidth="30.0" text="Vklad" />
                         <TextField fx:id="textFieldWithdraw" layoutX="100.0" layoutY="131.0" prefHeight="25.0" prefWidth="107.0" />
                         <TextField fx:id="textFieldDeposit" layoutX="390.0" layoutY="131.0" prefHeight="25.0" prefWidth="107.0" />
                         <Label layoutX="33.0" layoutY="135.0" text="Amount" />
                         <Label layoutX="328.0" layoutY="135.0" text="Amount" />
-                        <Button fx:id="btnWithdraw" layoutX="120.0" layoutY="173.0" mnemonicParsing="false" onAction="#withdrawMoney" text="Withdraw" />
-                        <Button fx:id="btnDeposit" layoutX="409.0" layoutY="173.0" mnemonicParsing="false" onAction="#depositMoney" text="Deposit" />
-                        <ComboBox fx:id="comBoxTransAccounts" layoutX="225.0" layoutY="38.0" onAction="#selectAccountTran" prefWidth="150.0" />
+                        <Button fx:id="btnWithdraw" layoutX="113.0" layoutY="173.0" mnemonicParsing="false" onAction="#withdrawMoney" style="-fx-background-color: #ff7f35;" text="Withdraw" />
+                        <Button fx:id="btnDeposit" layoutX="414.0" layoutY="173.0" mnemonicParsing="false" onAction="#depositMoney" style="-fx-background-color: #ff7f35;" text="Deposit" />
+                        <ComboBox fx:id="comBoxTransAccounts" layoutX="143.0" layoutY="38.0" onAction="#selectAccountTran" prefWidth="150.0" />
                         <Label fx:id="lblMessWithdraw" layoutX="98.0" layoutY="217.0" />
                         <Label fx:id="lblMessDeposit" layoutX="399.0" layoutY="217.0" />
+                        <Label layoutX="342.0" layoutY="42.0" text="Amount of money:" />
+                        <Label fx:id="lblMoneyOfSelectAcc" layoutX="457.0" layoutY="42.0" text="Label">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
                      </children></AnchorPane>
                </content>
             </Tab>
         </tabs>
       </TabPane>
+      <Button fx:id="btnReloadClients" layoutX="462.0" layoutY="91.0" mnemonicParsing="false" onAction="#updateClients" style="-fx-background-color: #ff7f35;" text="Reload" />
    </children>
 </AnchorPane>

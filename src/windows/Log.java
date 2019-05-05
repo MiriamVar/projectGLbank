@@ -64,6 +64,9 @@ public class Log<client> {
     public Button btnDeposit;
     public Label lblMessWithdraw;
     public Label lblMessDeposit;
+    public ComboBox comBoxClientsAcc;
+    public Button btnReloadClients;
+    public Label lblMoneyOfSelectAcc;
 
     private mysqlDatabase database = mysqlDatabase.getInstanceOfDatabase();
     private List<Client> all_clients;
@@ -81,6 +84,11 @@ public class Log<client> {
         this.all_clients = database.getAllClients();
         loadAllClients();
 
+    }
+
+    public void updateClients() throws SQLException {
+        this.all_clients = database.getAllClients();
+        loadAllClients();
     }
 
 
@@ -120,6 +128,7 @@ public class Log<client> {
         ObservableList<String> list = FXCollections.observableArrayList();
         list.add("");
         comBoxClientAccounts.setItems(list);
+        comBoxClientsAcc.setItems(list);
         comBoxClientCards.setItems(list);
         actual_clientik = null;
         actual_accountik = null;
@@ -136,6 +145,10 @@ public class Log<client> {
         loadClientAccounts();
         showIBinfo();
         setBlockIB();
+        textFieldDeposit.setText("");
+        textFieldWithdraw.setText("");
+        lblMessWithdraw.setText("");
+        lblMessDeposit.setText("");
     }
 
     //vypisuje data o zamestnancovi
@@ -184,6 +197,7 @@ public class Log<client> {
         updateAccounts();
         actual_accountik = actual_clientik.getAccount(0);
         comBoxClientAccounts.getSelectionModel().select(0);
+        comBoxClientsAcc.getSelectionModel().select(0);
         showAccountsInfo();
         actual_accountik.loadCards();
         loadCards();
@@ -197,6 +211,7 @@ public class Log<client> {
         }
         comBoxClientAccounts.setItems(list2);
         comBoxTransAccounts.setItems(list2);
+        comBoxClientsAcc.setItems(list2);
     }
 
     //vypise info o accounte
@@ -448,16 +463,19 @@ public class Log<client> {
             return;
         }
         actual_accountik = actual_clientik.getAccount(selected);
+        double sum = actual_accountik.getAmount();
+        lblMoneyOfSelectAcc.setText(String.valueOf(sum));
         showAccountsInfo();
         actual_accountik.loadCards();
         loadCards();
     }
 
-    public void withdrawMoney(ActionEvent actionEvent) {
+    public void withdrawMoney(ActionEvent actionEvent) throws SQLException {
         double number = Double.parseDouble(textFieldWithdraw.getText());
         String accNum = actual_accountik.getAccountNumber();
         double actualAmountOfMoney = actual_accountik.getAmount();
         int id = actual_accountik.getId();
+
 
         if((actualAmountOfMoney-number) < 0){
             lblMessWithdraw.setText("You don't have enough money.");
@@ -465,17 +483,47 @@ public class Log<client> {
             database.sendingMoney(accNum,number);
             database.makeingTransaction(id, emp.getId(), accNum,number);
             textFieldWithdraw.setText("");
-            lblMessWithdraw.setText("Money was sent.");
         }
+        redrawAccountMoney();
     }
 
-    public void depositMoney(ActionEvent actionEvent) {
+    public void depositMoney(ActionEvent actionEvent) throws SQLException {
         double number = Double.parseDouble(textFieldDeposit.getText());
         String accNum = actual_accountik.getAccountNumber();
         int id = actual_accountik.getId();
         database.gettingMoney(accNum,number);
         database.makeingTransaction(id, emp.getId(), accNum,number);
         textFieldDeposit.setText("");
+        redrawAccountMoney2();
+    }
+
+    public void selectAccountOfClient(ActionEvent actionEvent) {
+        System.out.println("tu su accoutny");
+        if (actual_clientik == null || actual_clientik.countOfAccounts() == 0){
+            System.out.println("select account - osetrenie" + actual_clientik);
+            return;
+        }
+        int selected  = comBoxClientsAcc.getSelectionModel().getSelectedIndex();
+        if (selected<0){
+            return;
+        }
+        actual_accountik = actual_clientik.getAccount(selected);
+        showAccountsInfo();
+        actual_accountik.loadCards();
+        loadCards();
+    }
+
+    public void redrawAccountMoney() throws SQLException {
+        loadAllClients();
+        double sum = this.actual_accountik.getAmount();
+        lblMoneyOfSelectAcc.setText(String.valueOf(sum));
+        lblMessWithdraw.setText("Money was sent.");
+    }
+
+    public void redrawAccountMoney2() throws SQLException {
+        loadAllClients();
+        double sum = this.actual_accountik.getAmount();
+        lblMoneyOfSelectAcc.setText(String.valueOf(sum));
         lblMessDeposit.setText("Money was get.");
     }
 

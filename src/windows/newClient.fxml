@@ -6,19 +6,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="262.0" prefWidth="453.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="windows.newClient">
+<AnchorPane prefHeight="287.0" prefWidth="434.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="windows.newClient">
    <children>
-      <Label layoutX="184.0" layoutY="24.0" text="New Client">
+      <Label layoutX="166.0" layoutY="24.0" text="New Client">
          <font>
-            <Font size="23.0" />
+            <Font name="System Bold" size="23.0" />
          </font>
       </Label>
-      <Label layoutX="146.0" layoutY="93.0" text="name" />
-      <Label layoutX="139.0" layoutY="132.0" text="surname" />
-      <Label layoutX="147.0" layoutY="175.0" text="email" />
-      <TextField fx:id="meno" layoutX="202.0" layoutY="89.0" />
-      <TextField fx:id="priezvisko" layoutX="202.0" layoutY="128.0" />
-      <TextField fx:id="email" layoutX="202.0" layoutY="171.0" />
-      <Button fx:id="sendNC" layoutX="206.0" layoutY="211.0" mnemonicParsing="false" onAction="#sendingNC" text="send" />
+      <Label layoutX="129.0" layoutY="93.0" text="Name:" />
+      <Label layoutX="113.0" layoutY="132.0" text="Surname:" />
+      <Label layoutX="132.0" layoutY="175.0" text="Email:" />
+      <TextField fx:id="meno" layoutX="185.0" layoutY="89.0" />
+      <TextField fx:id="priezvisko" layoutX="185.0" layoutY="128.0" />
+      <TextField fx:id="email" layoutX="185.0" layoutY="171.0" />
+      <Button fx:id="sendNC" layoutX="191.0" layoutY="233.0" mnemonicParsing="false" onAction="#sendingNC" style="-fx-background-color: #f2621f;" text="Send" />
+      <Label fx:id="lblMess" layoutX="140.0" layoutY="207.0" text="You have to entre all information." textFill="#f21111" visible="false" />
    </children>
 </AnchorPane>
